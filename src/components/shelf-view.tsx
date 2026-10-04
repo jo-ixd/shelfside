@@ -258,13 +258,13 @@ export function ShelfView() {
       </div>
       <div className="mx-3.5 mt-3.5">
         {[...byShelf.entries()].map(([shelf, list]) => {
-          const vis = list.filter(
-            (b) => !q || (b.t + " " + b.a + " " + b.g).toLowerCase().includes(q)
-          );
+          const matches = (b: Book) =>
+            !q || (b.t + " " + b.a + " " + b.g).toLowerCase().includes(q);
+          const matchingCount = list.filter(matches).length;
           const draggingHere = dropTarget?.shelf === shelf;
           const items: React.ReactNode[] = [];
           let gapShown = false;
-          vis.forEach((b, i) => {
+          list.forEach((b, i) => {
             if (draggingHere && dropTarget!.idx === i && !gapShown) {
               items.push(
                 <div
@@ -280,13 +280,13 @@ export function ShelfView() {
               <BookSpine
                 key={b.id}
                 b={b}
-                match={!q || (b.t + " " + b.a + " " + b.g).toLowerCase().includes(q)}
+                match={matches(b)}
                 grabbed={grabbedId === b.id}
                 onPointerDown={onPointerDown}
               />
             );
           });
-          if (draggingHere && !gapShown && (dropTarget!.idx >= vis.length || vis.length === 0)) {
+          if (draggingHere && !gapShown) {
             items.push(
               <div
                 key="gap"
@@ -300,7 +300,7 @@ export function ShelfView() {
               <p className="mb-1.5 ml-1 flex justify-between text-[0.7rem] uppercase tracking-[0.14em] text-muted-foreground">
                 <span>{shelf}</span>
                 <span className="text-muted-foreground/60">
-                  {vis.length}
+                  {matchingCount}
                   {q ? "/" + list.length : ""}
                 </span>
               </p>
@@ -311,7 +311,7 @@ export function ShelfView() {
                   background: SHELF.gradient,
                   border: `2px solid ${SHELF.border}`,
                   borderBottom: `8px solid ${SHELF.lip}`,
-                  minHeight: vis.length ? 150 : 60,
+                  minHeight: list.length ? 150 : 60,
                 }}
               >
                 {items}
