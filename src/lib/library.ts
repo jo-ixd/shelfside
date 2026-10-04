@@ -156,7 +156,15 @@ export function loadState(): AppState {
     const raw =
       typeof window !== "undefined" ? localStorage.getItem(STORAGE_KEY) : null;
     const parsed = raw ? (JSON.parse(raw) as AppState) : null;
-    if (parsed && Array.isArray(parsed.books)) return parsed;
+    if (
+      parsed &&
+      Array.isArray(parsed.books) &&
+      parsed.profile &&
+      typeof parsed.profile === "object" &&
+      typeof parsed.profile.accent === "string" &&
+      Array.isArray(parsed.cols)
+    )
+      return parsed;
   } catch {
     /* fall through to fresh state */
   }

@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { toast } from "sonner";
 import {
   bookWidth,
   colourOf,
@@ -40,6 +41,10 @@ export function CollectionsGrid({ wish }: { wish: boolean }) {
   function addCollection() {
     const trimmed = name.trim();
     if (!trimmed) return;
+    if (state?.cols.some((c) => c.name === trimmed)) {
+      toast(`"${trimmed}" already exists`);
+      return;
+    }
     update((d) => {
       d.cols.push({ name: trimmed, wish });
     });
