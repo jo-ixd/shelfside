@@ -17,6 +17,7 @@ import { Label } from "@/components/ui/label";
 import {
   bookWidth,
   colourOf,
+  SHELF,
   type Collection,
 } from "@/lib/library";
 import { buzz, useLibrary } from "@/lib/store";
@@ -64,7 +65,14 @@ export function CollectionsGrid({ wish }: { wish: boolean }) {
                 {inCol.length} book{inCol.length === 1 ? "" : "s"} ·{" "}
                 {shelves.size} shelf{shelves.size === 1 ? "" : "ves"}
               </span>
-              <div className="mt-2.5 flex h-16 items-end gap-0.5 overflow-hidden rounded-md border border-border border-b-[5px] border-b-[#6b5433] bg-gradient-to-b from-[#3a2d1c] to-[#2c2213] px-1.25 pt-1">
+              <div
+                className="mt-2.5 flex h-16 items-end gap-0.5 overflow-hidden rounded-md px-1.25 pt-1"
+                style={{
+                  background: SHELF.miniGradient,
+                  border: `1px solid var(--border)`,
+                  borderBottom: `5px solid ${SHELF.lip}`,
+                }}
+              >
                 {inCol.slice(0, 10).map((b) => (
                   <i
                     key={b.id}
