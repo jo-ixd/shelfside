@@ -156,13 +156,37 @@ export function loadState(): AppState {
     const raw =
       typeof window !== "undefined" ? localStorage.getItem(STORAGE_KEY) : null;
     const parsed = raw ? (JSON.parse(raw) as AppState) : null;
+    const okBooks =
+      !!parsed &&
+      Array.isArray(parsed.books) &&
+      parsed.books.every(
+        (b) =>
+          b &&
+          typeof b === "object" &&
+          typeof (b as Book).id === "string" &&
+          typeof (b as Book).t === "string" &&
+          typeof (b as Book).col === "string" &&
+          typeof (b as Book).shelf === "string" &&
+          typeof (b as Book).st === "string" &&
+          typeof (b as Book).wish === "boolean"
+      );
+    const okCols =
+      !!parsed &&
+      Array.isArray(parsed.cols) &&
+      parsed.cols.every(
+        (c) =>
+          c &&
+          typeof c === "object" &&
+          typeof (c as Collection).name === "string" &&
+          typeof (c as Collection).wish === "boolean"
+      );
     if (
       parsed &&
-      Array.isArray(parsed.books) &&
+      okBooks &&
       parsed.profile &&
       typeof parsed.profile === "object" &&
       typeof parsed.profile.accent === "string" &&
-      Array.isArray(parsed.cols)
+      okCols
     )
       return parsed;
   } catch {
