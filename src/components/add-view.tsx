@@ -107,7 +107,7 @@ export function AddView() {
     };
     if (coverData) nb.cover = coverData;
     const ok = update((d) => {
-      if (!d.cols.some((c) => c.name === nb.col && c.wish === wish)) {
+      if (!d.cols.some((c) => c.name.toLowerCase() === nb.col.toLowerCase() && c.wish === wish)) {
         d.cols.push({ name: nb.col, wish });
       }
       d.books.push(nb);
