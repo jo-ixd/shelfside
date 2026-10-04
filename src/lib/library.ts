@@ -48,6 +48,16 @@ export const GENRE_COLORS: Record<string, string> = {
 export const STATUSES = ["Read", "Reading", "To Read", "Reference", "Lent out"];
 export const WISH_STATUSES = ["Wish", "Ordered"];
 
+/* Shelf graphics & status colors, carried over from the prototype. */
+export const SHELF = {
+  gradient: "linear-gradient(#3a2d1c, #2c2213)",
+  miniGradient: "linear-gradient(#3a2d1c, #2c2213)",
+  border: "#54422a",
+  lip: "#6b5433",
+};
+export const READING_COLOR = "#ffd76a";
+export const WISH_COLOR = "#d4a0d8";
+
 export const ACCENTS: Record<string, string> = {
   Amber: "#c9a86a",
   Teal: "#5fb3a1",
