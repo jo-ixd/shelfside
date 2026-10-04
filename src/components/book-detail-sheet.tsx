@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { CameraIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import {
   Drawer,
@@ -26,14 +26,13 @@ export function BookDetailSheet({
   onClose: () => void;
 }) {
   const { state, update } = useLibrary();
-  const [armed, setArmed] = useState(false);
+  const [armedId, setArmedId] = useState<string | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
 
   const book: Book | undefined = bookId
     ? state?.books.find((b) => b.id === bookId)
     : undefined;
-
-  useEffect(() => setArmed(false), [bookId]);
+  const armed = book !== undefined && armedId === book.id;
 
   if (!state) return null;
 
@@ -70,7 +69,7 @@ export function BookDetailSheet({
 
   function removeBook(b: Book) {
     if (!armed) {
-      setArmed(true);
+      setArmedId(b.id);
       return;
     }
     update((d) => {

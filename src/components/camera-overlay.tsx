@@ -26,7 +26,6 @@ export function CameraOverlay({
 
   useEffect(() => {
     if (!open) return;
-    setEnhancing(false);
     timers.current.forEach(clearTimeout);
     timers.current = [];
     if (mode === "scan") {
