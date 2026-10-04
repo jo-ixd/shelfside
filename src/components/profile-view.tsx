@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { ChevronRightIcon } from "@heroicons/react/24/outline";
 import { toast } from "sonner";
 import { PageHeader } from "@/components/page-header";
@@ -13,14 +13,11 @@ const LABELS: Record<string, string> = { "About Shelfside": "About" };
 
 export function ProfileView() {
   const { state, update } = useLibrary();
-  const [name, setName] = useState("");
-
-  useEffect(() => {
-    if (state && !name) setName(state.profile.name);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state?.profile.name]);
+  const [nameInput, setNameInput] = useState<string | null>(null);
 
   if (!state) return null;
+
+  const name = nameInput ?? state.profile.name;
 
   const lib = state.books.filter((b) => !b.wish);
   const reading = lib.filter((b) => b.st === "Reading").length;
@@ -31,7 +28,7 @@ export function ProfileView() {
     update((d) => {
       d.profile.name = next;
     });
-    setName(next);
+    setNameInput(next);
   }
 
   function pickAccent(accent: string) {
@@ -54,7 +51,7 @@ export function ProfileView() {
           </p>
           <Input
             value={name}
-            onChange={(e) => setName(e.target.value)}
+            onChange={(e) => setNameInput(e.target.value)}
             onBlur={(e) => saveName(e.target.value)}
             autoComplete="off"
             className="mt-1 h-10 w-[200px] max-w-full rounded-lg px-3"

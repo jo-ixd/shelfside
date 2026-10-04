@@ -1,11 +1,10 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import {
   CameraIcon,
   CheckCircleIcon,
-  LinkIcon,
   PhotoIcon,
   SparklesIcon,
 } from "@heroicons/react/24/outline";
@@ -58,7 +57,7 @@ export function AddView() {
   const [colValue, setColValue] = useState<string>("");
   const [coverData, setCoverData] = useState<string | null>(null);
   const [matched, setMatched] = useState<string | null>(null);
-  const [cam, setCam] = useState(false);
+  const [cam, setCam] = useState(mode === "scan");
   const [chooser, setChooser] = useState(false);
   const [fetching, setFetching] = useState(false);
   const [url, setUrl] = useState("");
@@ -67,20 +66,7 @@ export function AddView() {
   const scanIdx = useRef(0);
 
   const cols = state?.cols.filter((c) => c.wish === wish) ?? [];
-
-  /* Default the collection once state is loaded. */
-  useEffect(() => {
-    if (state && !colValue) {
-      const first = state.cols.find((c) => c.wish === wish);
-      if (first) setColValue(first.name);
-    }
-  }, [state, colValue, wish]);
-
-  /* Scan mode fires the fake camera on entry. */
-  useEffect(() => {
-    if (mode === "scan") setCam(true);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [mode]);
+  const col = colValue || cols[0]?.name || "";
 
   function prefill(
     m: { t: string; a: string; g: string },
@@ -110,7 +96,7 @@ export function AddView() {
       t,
       a: author.trim() || "Unknown author",
       g: genre,
-      col: colValue,
+      col: col,
       shelf: shelf.trim() || "Shelf A",
       st: wish ? "Wish" : "To Read",
       wish,
@@ -257,7 +243,7 @@ export function AddView() {
               Collection
             </Label>
             <Select
-              value={colValue}
+              value={col}
               onValueChange={(v) => setColValue(v as string)}
             >
               <SelectTrigger className="mt-1 h-10 w-full rounded-lg">
@@ -354,23 +340,25 @@ export function AddView() {
         </DrawerContent>
       </Drawer>
 
-      <CameraOverlay
-        open={cam}
-        mode={mode === "scan" ? "scan" : "ai"}
-        onCancel={() => setCam(false)}
-        onScan={() => {
-          setCam(false);
-          prefill(nextMatch(), "ISBN matched — details fetched from lookup");
-        }}
-        onShot={() => {
-          setCam(false);
-          setCoverData(
-            makeCover(title.trim() || "Untitled", author.trim(), genre)
-          );
-          toast("AI cover generated (prototype)");
-          buzz(20);
-        }}
-      />
+      {cam ? (
+        <CameraOverlay
+          open
+          mode={mode === "scan" ? "scan" : "ai"}
+          onCancel={() => setCam(false)}
+          onScan={() => {
+            setCam(false);
+            prefill(nextMatch(), "ISBN matched — details fetched from lookup");
+          }}
+          onShot={() => {
+            setCam(false);
+            setCoverData(
+              makeCover(title.trim() || "Untitled", author.trim(), genre)
+            );
+            toast("AI cover generated (prototype)");
+            buzz(20);
+          }}
+        />
+      ) : null}
 
       <input
         ref={fileRef}

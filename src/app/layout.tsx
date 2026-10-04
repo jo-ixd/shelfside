@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { LibraryProvider } from "@/lib/store";
+import { AccentSync } from "@/components/accent-sync";
 import { BottomNav } from "@/components/bottom-nav";
 import { AddFab } from "@/components/add-fab";
 import { Toaster } from "@/components/ui/sonner";
@@ -36,6 +37,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="flex min-h-full flex-col pb-24">
         <ThemeProvider>
           <LibraryProvider>
+            <AccentSync />
             {children}
             <BottomNav />
             <AddFab />
