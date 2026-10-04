@@ -80,7 +80,7 @@ export function CameraOverlay({
         <span className="absolute bottom-0 right-0 size-7 rounded-[0_0_10px_0] border-3 border-primary border-l-0 border-t-0" />
         <div
           ref={scanRef}
-          className="absolute inset-x-2 h-0.5 rounded bg-primary shadow-[0_0_12px_var(--primary)]"
+          className="absolute inset-x-2 top-[10%] h-0.5 rounded bg-primary opacity-0 shadow-[0_0_12px_var(--primary)]"
         />
       </div>
       {mode === "ai" && !enhancing ? (
