@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { PlusIcon } from "@heroicons/react/24/outline";
+import { PageHeader } from "@/components/page-header";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -48,9 +49,9 @@ export function CollectionsGrid({ wish }: { wish: boolean }) {
   }
 
   return (
-    <section aria-label={sub}>
-      <p className="sr-only">{sub}</p>
-      <div className="grid grid-cols-1 gap-3 px-4 pt-3.5 pb-2">
+    <>
+      <PageHeader title={wish ? "Wishlist" : "Shelfside"} sub={sub} />
+      <section aria-label={sub} className="grid grid-cols-1 gap-3 px-4 pt-3.5 pb-2">
         {cols.map((c) => {
           const inCol = inWish.filter((b) => b.col === c.name);
           const shelves = new Set(inCol.map((b) => b.shelf));
@@ -69,7 +70,7 @@ export function CollectionsGrid({ wish }: { wish: boolean }) {
                 className="mt-2.5 flex h-16 items-end gap-0.5 overflow-hidden rounded-md px-1.25 pt-1"
                 style={{
                   background: SHELF.miniGradient,
-                  border: `1px solid var(--border)`,
+                  border: "1px solid var(--border)",
                   borderBottom: `5px solid ${SHELF.lip}`,
                 }}
               >
@@ -90,18 +91,16 @@ export function CollectionsGrid({ wish }: { wish: boolean }) {
         <button
           type="button"
           onClick={() => setAdding(true)}
-          className="flex min-h-16 items-center justify-center rounded-2xl border border-dashed border-border text-sm text-muted-foreground/70"
+          className="flex min-h-16 items-center justify-center gap-1 rounded-2xl border border-dashed border-border text-sm text-muted-foreground/70"
         >
           <PlusIcon className="size-4" /> New {noun}
         </button>
-      </div>
+      </section>
 
       <Dialog open={adding} onOpenChange={setAdding}>
         <DialogContent showCloseButton={false}>
           <DialogHeader>
-            <DialogTitle className="font-serif">
-              New {noun}
-            </DialogTitle>
+            <DialogTitle className="font-serif">New {noun}</DialogTitle>
             <DialogDescription>
               Name your new {noun}. You can move books into it later.
             </DialogDescription>
@@ -129,6 +128,6 @@ export function CollectionsGrid({ wish }: { wish: boolean }) {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-    </section>
+    </>
   );
 }
