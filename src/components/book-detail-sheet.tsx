@@ -88,10 +88,8 @@ export function BookDetailSheet({
       if (nb) nb.cover = data;
     });
     if (!ok) {
-      update((d) => {
-        const nb = d.books.find((x) => x.id === b.id);
-        if (nb) delete nb.cover;
-      });
+      /* The failed save was never committed, so committed state (including
+         any previous cover) is untouched — nothing to roll back. */
       toast("Storage full, cover not saved");
     }
     buzz(15);

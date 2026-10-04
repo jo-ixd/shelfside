@@ -283,6 +283,7 @@ export function ShelfView() {
                 match={matches(b)}
                 grabbed={grabbedId === b.id}
                 onPointerDown={onPointerDown}
+                onOpen={setDetailId}
               />
             );
           });
@@ -354,11 +355,13 @@ function BookSpine({
   match,
   grabbed,
   onPointerDown,
+  onOpen,
 }: {
   b: Book;
   match: boolean;
   grabbed: boolean;
   onPointerDown: (e: React.PointerEvent, b: Book) => void;
+  onOpen: (id: string) => void;
 }) {
   return (
     <div
@@ -369,7 +372,8 @@ function BookSpine({
       onPointerDown={(e) => onPointerDown(e, b)}
       onKeyDown={(e) => {
         if (e.key === "Enter" || e.key === " ") {
-          (e.currentTarget as HTMLElement).click();
+          e.preventDefault();
+          onOpen(b.id);
         }
       }}
       className={`relative flex h-[140px] shrink-0 cursor-pointer items-center justify-center rounded-[2px_4px_4px_2px] shadow-[inset_-3px_0_5px_rgba(0,0,0,0.4)] transition-transform [touch-action:pan-y] select-none hover:-translate-y-1.5 ${
