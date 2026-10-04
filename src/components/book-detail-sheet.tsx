@@ -82,7 +82,13 @@ export function BookDetailSheet({
 
   async function swapCover(b: Book, file: File | undefined) {
     if (!file || !b) return;
-    const data = await fileToCoverData(file);
+    let data: string;
+    try {
+      data = await fileToCoverData(file);
+    } catch {
+      toast("Couldn't read that image");
+      return;
+    }
     const ok = update((d) => {
       const nb = d.books.find((x) => x.id === b.id);
       if (nb) nb.cover = data;

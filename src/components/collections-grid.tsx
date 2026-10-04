@@ -41,7 +41,7 @@ export function CollectionsGrid({ wish }: { wish: boolean }) {
   function addCollection() {
     const trimmed = name.trim();
     if (!trimmed) return;
-    if (state?.cols.some((c) => c.name === trimmed)) {
+    if (state?.cols.some((c) => c.name.toLowerCase() === trimmed.toLowerCase())) {
       toast(`"${trimmed}" already exists`);
       return;
     }
