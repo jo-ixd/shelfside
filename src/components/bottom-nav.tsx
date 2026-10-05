@@ -34,7 +34,7 @@ export function BottomNav() {
             key={tab.href}
             href={tab.href}
             aria-current={on ? "page" : undefined}
-            className={`flex flex-1 flex-col items-center gap-0.5 py-1.5 text-xs ${
+            className={`flex flex-1 flex-col items-center gap-0.5 py-1.5 text-sm ${
               on ? "text-primary" : "text-muted-foreground/70"
             }`}
           >

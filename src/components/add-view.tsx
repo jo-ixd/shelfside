@@ -188,7 +188,7 @@ export function AddView() {
           <div className="min-w-0 flex-1 pt-1">
             {mode === "link" ? (
               <div className="mb-2">
-                <Label className="text-xs uppercase tracking-[0.1em] text-muted-foreground">
+                <Label className="text-sm text-muted-foreground">
                   Product page link
                 </Label>
                 <div className="mt-1 flex gap-2">
@@ -207,7 +207,7 @@ export function AddView() {
             ) : null}
             <Label
               htmlFor="f-title"
-              className="text-xs uppercase tracking-[0.1em] text-muted-foreground"
+              className="text-sm text-muted-foreground"
             >
               Title
             </Label>
@@ -222,7 +222,7 @@ export function AddView() {
             />
             <Label
               htmlFor="f-author"
-              className="mt-2.5 text-xs uppercase tracking-[0.1em] text-muted-foreground"
+              className="mt-2.5 text-sm text-muted-foreground"
             >
               Author
             </Label>
@@ -239,7 +239,7 @@ export function AddView() {
 
         <div className="mt-1 flex gap-2.5">
           <div className="flex-1">
-            <Label className="text-xs uppercase tracking-[0.1em] text-muted-foreground">
+            <Label className="text-sm text-muted-foreground">
               Collection
             </Label>
             <Select
@@ -261,7 +261,7 @@ export function AddView() {
           <div className="flex-1">
             <Label
               htmlFor="f-shelf"
-              className="text-xs uppercase tracking-[0.1em] text-muted-foreground"
+              className="text-sm text-muted-foreground"
             >
               Shelf
             </Label>
@@ -275,7 +275,7 @@ export function AddView() {
           </div>
         </div>
 
-        <Label className="mt-2.5 text-xs uppercase tracking-[0.1em] text-muted-foreground">
+        <Label className="mt-2.5 text-sm text-muted-foreground">
           Genre
         </Label>
         <Select value={genre} onValueChange={(v) => setGenre(v as string)}>
@@ -315,7 +315,7 @@ export function AddView() {
               <PhotoIcon className="size-6 shrink-0 text-primary" />
               <span>
                 Upload photo
-                <small className="block text-xs text-muted-foreground">
+                <small className="block text-sm text-muted-foreground">
                   Your own picture for odd editions
                 </small>
               </span>
@@ -331,7 +331,7 @@ export function AddView() {
               <SparklesIcon className="size-6 shrink-0 text-primary" />
               <span>
                 Generate with AI
-                <small className="block text-xs text-muted-foreground">
+                <small className="block text-sm text-muted-foreground">
                   Snap the real cover, let AI flatten it
                 </small>
               </span>

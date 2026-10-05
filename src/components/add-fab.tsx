@@ -72,7 +72,7 @@ export function AddFab() {
                 <a.icon className="size-6 shrink-0 text-primary" />
                 <span>
                   {a.label}
-                  <small className="block text-xs text-muted-foreground">
+                  <small className="block text-sm text-muted-foreground">
                     {a.sub}
                   </small>
                 </span>
@@ -90,7 +90,7 @@ export function AddFab() {
               <PlusIcon className="size-6 shrink-0 text-primary" />
               <span>
                 New {noun}
-                <small className="block text-xs text-muted-foreground">
+                <small className="block text-sm text-muted-foreground">
                   Group books into a new {noun}
                 </small>
               </span>
