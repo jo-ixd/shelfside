@@ -238,7 +238,7 @@ export function ShelfView() {
 
   const sub =
     (q ? `${matching} matching · ` : "") +
-    `${all.length} books · ${byShelf.size} shelves` +
+    `${all.length} book${all.length === 1 ? "" : "s"} · ${byShelf.size} shelf${byShelf.size === 1 ? "" : "ves"}` +
     (wish ? " · wishlist" : "");
 
   const dragBook = drag ? state.books.find((b) => b.id === drag.id) : undefined;
@@ -321,9 +321,6 @@ export function ShelfView() {
           );
         })}
       </div>
-      <p className="pt-4 pb-1 text-center text-[0.7rem] text-muted-foreground/70">
-        tap a spine to pull the book out · hold a spine to move it between shelves
-      </p>
 
       {drag && dragBook ? (
         <div
