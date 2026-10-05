@@ -46,7 +46,7 @@ export function ProfileView() {
           {(name || "?").charAt(0).toUpperCase()}
         </div>
         <div className="min-w-0 pt-[18px]">
-          <p className="text-xs uppercase tracking-[0.1em] text-muted-foreground">
+          <p className="text-sm text-muted-foreground">
             Name
           </p>
           <Input
@@ -70,13 +70,13 @@ export function ProfileView() {
             className="flex-1 rounded-xl border border-border bg-card p-3 text-center"
           >
             <div className="text-2xl font-bold">{s.n}</div>
-            <div className="mt-0.5 text-xs text-muted-foreground">{s.l}</div>
+            <div className="mt-0.5 text-sm text-muted-foreground">{s.l}</div>
           </div>
         ))}
       </div>
 
       <section className="px-4 pt-4.5">
-        <h2 className="mb-2.5 text-xs uppercase tracking-[0.12em] text-muted-foreground">
+        <h2 className="mb-2.5 text-sm text-muted-foreground">
           Theme
         </h2>
         <div className="flex gap-3">
@@ -99,7 +99,7 @@ export function ProfileView() {
       </section>
 
       <section className="px-4 pt-4.5">
-        <h2 className="mb-2.5 text-xs uppercase tracking-[0.12em] text-muted-foreground">
+        <h2 className="mb-2.5 text-sm text-muted-foreground">
           Settings
         </h2>
         {DUMMY_ROWS.map((row) => (

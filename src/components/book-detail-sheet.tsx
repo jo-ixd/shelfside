@@ -148,12 +148,12 @@ export function BookDetailSheet({
             <DrawerTitle className="font-serif text-lg leading-snug">
               {book.t}
             </DrawerTitle>
-            <p className="mt-0.5 text-sm text-muted-foreground">
+            <p className="mt-0.5 text-base text-muted-foreground">
               {book.a || "Unknown author"}
             </p>
           </div>
         </div>
-        <p className="pt-2 text-sm text-muted-foreground">
+        <p className="pt-2 text-base text-muted-foreground">
           {book.col} · {book.shelf} · {book.g || "Unsorted"}
           {book.added ? ` · added ${book.added}` : ""}
         </p>
@@ -180,7 +180,7 @@ export function BookDetailSheet({
                 }}
               />
             </button>
-            <p className="mt-1 text-sm text-muted-foreground">
+            <p className="mt-1 text-base text-muted-foreground">
               {prog}% through · tap the bar to add 10%
             </p>
           </div>
