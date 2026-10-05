@@ -46,7 +46,7 @@ export function ProfileView() {
           {(name || "?").charAt(0).toUpperCase()}
         </div>
         <div className="min-w-0 pt-[18px]">
-          <p className="text-[0.7rem] uppercase tracking-[0.1em] text-muted-foreground">
+          <p className="text-xs uppercase tracking-[0.1em] text-muted-foreground">
             Name
           </p>
           <Input
@@ -69,14 +69,14 @@ export function ProfileView() {
             key={s.l}
             className="flex-1 rounded-xl border border-border bg-card p-3 text-center"
           >
-            <div className="text-[1.3rem] font-bold">{s.n}</div>
-            <div className="mt-0.5 text-[0.7rem] text-muted-foreground">{s.l}</div>
+            <div className="text-2xl font-bold">{s.n}</div>
+            <div className="mt-0.5 text-xs text-muted-foreground">{s.l}</div>
           </div>
         ))}
       </div>
 
       <section className="px-4 pt-4.5">
-        <h2 className="mb-2.5 text-[0.74rem] uppercase tracking-[0.12em] text-muted-foreground">
+        <h2 className="mb-2.5 text-xs uppercase tracking-[0.12em] text-muted-foreground">
           Theme
         </h2>
         <div className="flex gap-3">
@@ -99,7 +99,7 @@ export function ProfileView() {
       </section>
 
       <section className="px-4 pt-4.5">
-        <h2 className="mb-2.5 text-[0.74rem] uppercase tracking-[0.12em] text-muted-foreground">
+        <h2 className="mb-2.5 text-xs uppercase tracking-[0.12em] text-muted-foreground">
           Settings
         </h2>
         {DUMMY_ROWS.map((row) => (
@@ -107,7 +107,7 @@ export function ProfileView() {
             key={row}
             type="button"
             onClick={() => toast(`${row} — not wired up in the prototype yet`)}
-            className="mb-2.5 flex w-full items-center justify-between rounded-xl border border-border bg-card px-3.5 py-3.5 text-left text-[0.92rem]"
+            className="mb-2.5 flex w-full items-center justify-between rounded-xl border border-border bg-card px-3.5 py-3.5 text-left text-sm"
           >
             {LABELS[row] ?? row}
             <ChevronRightIcon className="size-4 text-muted-foreground/60" />
