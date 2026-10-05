@@ -53,7 +53,7 @@ export function NewCollectionView() {
       >
         <Label
           htmlFor="new-col-name"
-          className="text-xs uppercase tracking-[0.1em] text-muted-foreground"
+          className="text-sm text-muted-foreground"
         >
           Name
         </Label>
