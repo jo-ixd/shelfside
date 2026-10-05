@@ -138,29 +138,29 @@ export function BookDetailSheet({
                 className="absolute inset-0 size-full object-cover"
               />
             ) : (
-              <span className="absolute inset-0 flex flex-col items-center justify-center gap-1.5 text-[0.68rem] text-muted-foreground/80">
+              <span className="absolute inset-0 flex flex-col items-center justify-center gap-1.5 text-xs text-muted-foreground/80">
                 <CameraIcon className="size-5" />
                 Swap cover
               </span>
             )}
           </button>
           <div className="min-w-0 pt-0.5">
-            <DrawerTitle className="font-serif text-[1.05rem] leading-snug">
+            <DrawerTitle className="font-serif text-lg leading-snug">
               {book.t}
             </DrawerTitle>
-            <p className="mt-0.5 text-[0.82rem] text-muted-foreground">
+            <p className="mt-0.5 text-sm text-muted-foreground">
               {book.a || "Unknown author"}
             </p>
           </div>
         </div>
-        <p className="pt-2 text-[0.82rem] text-muted-foreground">
+        <p className="pt-2 text-sm text-muted-foreground">
           {book.col} · {book.shelf} · {book.g || "Unsorted"}
           {book.added ? ` · added ${book.added}` : ""}
         </p>
         <button
           type="button"
           onClick={() => cycleStatus(book)}
-          className="mt-2.5 w-fit rounded-full border border-border bg-secondary px-3.5 py-1.5 text-[0.8rem]"
+          className="mt-2.5 w-fit rounded-full border border-border bg-secondary px-3.5 py-1.5 text-sm"
         >
           {book.st}
         </button>
@@ -180,7 +180,7 @@ export function BookDetailSheet({
                 }}
               />
             </button>
-            <p className="mt-1 text-[0.82rem] text-muted-foreground">
+            <p className="mt-1 text-sm text-muted-foreground">
               {prog}% through · tap the bar to add 10%
             </p>
           </div>
@@ -188,7 +188,7 @@ export function BookDetailSheet({
         <button
           type="button"
           onClick={() => removeBook(book)}
-          className="mt-3.5 w-full rounded-lg border border-destructive/40 px-3.5 py-2 text-[0.8rem] text-destructive"
+          className="mt-3.5 w-full rounded-lg border border-destructive/40 px-3.5 py-2 text-sm text-destructive"
         >
           {armed
             ? `Tap again to remove \u201C${book.t}\u201D`

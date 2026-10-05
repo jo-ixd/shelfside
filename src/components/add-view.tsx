@@ -156,7 +156,7 @@ export function AddView() {
       <div className="px-4 pt-3">
         {matched ? (
           <p
-            className="mb-2 flex items-center gap-2 rounded-lg px-3 py-2 text-[0.78rem]"
+            className="mb-2 flex items-center gap-2 rounded-lg px-3 py-2 text-sm"
             style={{ background: MATCHED.bg, border: `1px solid ${MATCHED.border}`, color: MATCHED.text }}
           >
             <CheckCircleIcon className="size-4 shrink-0" />
@@ -168,7 +168,7 @@ export function AddView() {
             type="button"
             aria-label="Add cover"
             onClick={() => setChooser(true)}
-            className="relative flex h-[158px] w-[108px] shrink-0 flex-col items-center justify-center gap-1.5 overflow-hidden rounded-[4px_8px_8px_4px] border border-dashed border-border bg-secondary p-2 text-center text-[0.72rem] text-muted-foreground/80"
+            className="relative flex h-[158px] w-[108px] shrink-0 flex-col items-center justify-center gap-1.5 overflow-hidden rounded-[4px_8px_8px_4px] border border-dashed border-border bg-secondary p-2 text-center text-xs text-muted-foreground/80"
             style={coverData ? { borderStyle: "solid" } : undefined}
           >
             {coverData ? (
@@ -188,7 +188,7 @@ export function AddView() {
           <div className="min-w-0 flex-1 pt-1">
             {mode === "link" ? (
               <div className="mb-2">
-                <Label className="text-[0.7rem] uppercase tracking-[0.1em] text-muted-foreground">
+                <Label className="text-xs uppercase tracking-[0.1em] text-muted-foreground">
                   Product page link
                 </Label>
                 <div className="mt-1 flex gap-2">
@@ -207,7 +207,7 @@ export function AddView() {
             ) : null}
             <Label
               htmlFor="f-title"
-              className="text-[0.7rem] uppercase tracking-[0.1em] text-muted-foreground"
+              className="text-xs uppercase tracking-[0.1em] text-muted-foreground"
             >
               Title
             </Label>
@@ -222,7 +222,7 @@ export function AddView() {
             />
             <Label
               htmlFor="f-author"
-              className="mt-2.5 text-[0.7rem] uppercase tracking-[0.1em] text-muted-foreground"
+              className="mt-2.5 text-xs uppercase tracking-[0.1em] text-muted-foreground"
             >
               Author
             </Label>
@@ -239,7 +239,7 @@ export function AddView() {
 
         <div className="mt-1 flex gap-2.5">
           <div className="flex-1">
-            <Label className="text-[0.7rem] uppercase tracking-[0.1em] text-muted-foreground">
+            <Label className="text-xs uppercase tracking-[0.1em] text-muted-foreground">
               Collection
             </Label>
             <Select
@@ -261,7 +261,7 @@ export function AddView() {
           <div className="flex-1">
             <Label
               htmlFor="f-shelf"
-              className="text-[0.7rem] uppercase tracking-[0.1em] text-muted-foreground"
+              className="text-xs uppercase tracking-[0.1em] text-muted-foreground"
             >
               Shelf
             </Label>
@@ -275,7 +275,7 @@ export function AddView() {
           </div>
         </div>
 
-        <Label className="mt-2.5 text-[0.7rem] uppercase tracking-[0.1em] text-muted-foreground">
+        <Label className="mt-2.5 text-xs uppercase tracking-[0.1em] text-muted-foreground">
           Genre
         </Label>
         <Select value={genre} onValueChange={(v) => setGenre(v as string)}>
@@ -310,7 +310,7 @@ export function AddView() {
                 setChooser(false);
                 setTimeout(() => fileRef.current?.click(), 60);
               }}
-              className="flex w-full items-center gap-3 rounded-xl border border-border bg-secondary px-3.5 py-3.5 text-left text-[0.95rem]"
+              className="flex w-full items-center gap-3 rounded-xl border border-border bg-secondary px-3.5 py-3.5 text-left text-sm"
             >
               <PhotoIcon className="size-6 shrink-0 text-primary" />
               <span>
@@ -326,7 +326,7 @@ export function AddView() {
                 setChooser(false);
                 setTimeout(() => setCam(true), 60);
               }}
-              className="flex w-full items-center gap-3 rounded-xl border border-border bg-secondary px-3.5 py-3.5 text-left text-[0.95rem]"
+              className="flex w-full items-center gap-3 rounded-xl border border-border bg-secondary px-3.5 py-3.5 text-left text-sm"
             >
               <SparklesIcon className="size-6 shrink-0 text-primary" />
               <span>

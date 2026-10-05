@@ -27,9 +27,9 @@ export function PageHeader({
           </button>
         ) : null}
         <div>
-          <h1 className="font-serif text-[1.35rem] leading-tight">{title}</h1>
+          <h1 className="font-serif text-2xl leading-tight">{title}</h1>
           {sub ? (
-            <p className="mt-0.5 text-[0.82rem] text-muted-foreground">{sub}</p>
+            <p className="mt-0.5 text-sm text-muted-foreground">{sub}</p>
           ) : null}
         </div>
       </div>

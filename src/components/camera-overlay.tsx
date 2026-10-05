@@ -97,7 +97,7 @@ export function CameraOverlay({
       <button
         type="button"
         onClick={onCancel}
-        className="mt-4 text-[0.85rem] text-muted-foreground/70"
+        className="mt-4 text-sm text-muted-foreground/70"
       >
         Cancel
       </button>

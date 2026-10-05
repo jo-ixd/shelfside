@@ -34,8 +34,8 @@ export function CollectionsGrid({ wish }: { wish: boolean }) {
               href={`/shelf?col=${encodeURIComponent(c.name)}&wish=${wish ? 1 : 0}`}
               className="block rounded-2xl border border-border bg-card p-3 transition-colors active:border-primary"
             >
-              <h3 className="font-serif text-[0.95rem]">{c.name}</h3>
-              <span className="text-[0.72rem] text-muted-foreground">
+              <h3 className="font-serif text-lg">{c.name}</h3>
+              <span className="text-xs text-muted-foreground">
                 {inCol.length} book{inCol.length === 1 ? "" : "s"} ·{" "}
                 {shelves.size} shelf{shelves.size === 1 ? "" : "ves"}
               </span>
