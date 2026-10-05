@@ -19,7 +19,7 @@ export function CollectionsGrid({ wish }: { wish: boolean }) {
   const inWish = state.books.filter((b) => b.wish === wish);
   const sub = wish
     ? "Books you want to own, grouped into lists"
-    : `${inWish.length} books across ${cols.length} collections`;
+    : `${inWish.length} book${inWish.length === 1 ? "" : "s"} across ${cols.length} collection${cols.length === 1 ? "" : "s"}`;
 
   return (
     <>
