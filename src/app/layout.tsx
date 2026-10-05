@@ -34,7 +34,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={`dark ${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="flex min-h-full flex-col pb-24">
+      <body className="flex min-h-full flex-col pb-24 text-base">
         <ThemeProvider>
           <LibraryProvider>
             <AccentSync />

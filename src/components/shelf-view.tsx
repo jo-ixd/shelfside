@@ -298,7 +298,7 @@ export function ShelfView() {
           }
           return (
             <div key={shelf} className="mb-0 mt-3.5">
-              <p className="mb-1.5 ml-1 flex justify-between text-[0.7rem] uppercase tracking-[0.14em] text-muted-foreground">
+              <p className="mb-1.5 ml-1 flex justify-between text-xs uppercase tracking-[0.14em] text-muted-foreground">
                 <span>{shelf}</span>
                 <span className="text-muted-foreground/60">
                   {matchingCount}
@@ -335,7 +335,7 @@ export function ShelfView() {
           }}
         >
           {!dragBook.spine ? (
-            <span className="px-0.5 text-[0.66rem] tracking-wider whitespace-nowrap text-white/90 [writing-mode:vertical-rl]">
+            <span className="px-0.5 text-xs tracking-wider whitespace-nowrap text-white/90 [writing-mode:vertical-rl]">
               {dragBook.t}
             </span>
           ) : null}
@@ -385,7 +385,7 @@ function BookSpine({
       }}
     >
       {!b.spine ? (
-        <span className="pointer-events-none max-h-[130px] overflow-hidden px-0.5 py-2 text-[0.66rem] tracking-wider whitespace-nowrap text-white/90 [text-shadow:0_1px_2px_rgba(0,0,0,0.6)] [writing-mode:vertical-rl]">
+        <span className="pointer-events-none max-h-[130px] overflow-hidden px-0.5 py-2 text-xs tracking-wider whitespace-nowrap text-white/90 [text-shadow:0_1px_2px_rgba(0,0,0,0.6)] [writing-mode:vertical-rl]">
           {b.t}
         </span>
       ) : null}
