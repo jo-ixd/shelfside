@@ -23,6 +23,8 @@ export function AddFab() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const wish = pathname === "/wishlist";
+  const ctx = wish ? "wishlist" : "library";
+  const noun = wish ? "list" : "collection";
 
   const acts: {
     icon: React.ComponentType<{ className?: string }>;
@@ -41,7 +43,7 @@ export function AddFab() {
     <>
       <button
         type="button"
-        aria-label="Add a book"
+        aria-label="Add a book or collection"
         onClick={() => {
           buzz(10);
           setOpen(true);
@@ -53,7 +55,7 @@ export function AddFab() {
       <Drawer open={open} onOpenChange={setOpen}>
         <DrawerContent className="p-4">
           <DrawerHeader className="p-0 pb-2">
-            <DrawerTitle className="font-serif text-lg">Add a book</DrawerTitle>
+            <DrawerTitle className="font-serif text-lg">Add</DrawerTitle>
           </DrawerHeader>
           <div className="flex flex-col gap-2.5">
             {acts.map((a) => (
@@ -62,7 +64,6 @@ export function AddFab() {
                 type="button"
                 onClick={() => {
                   setOpen(false);
-                  const ctx = wish ? "wishlist" : "library";
                   buzz(10);
                   router.push(`/add?ctx=${ctx}&mode=${a.mode}`);
                 }}
@@ -77,6 +78,23 @@ export function AddFab() {
                 </span>
               </button>
             ))}
+            <button
+              type="button"
+              onClick={() => {
+                setOpen(false);
+                buzz(10);
+                router.push(`/collections/new?ctx=${ctx}`);
+              }}
+              className="flex w-full items-center gap-3 rounded-xl border border-border bg-secondary px-3.5 py-3.5 text-left text-[0.95rem] text-foreground"
+            >
+              <PlusIcon className="size-6 shrink-0 text-primary" />
+              <span>
+                New {noun}
+                <small className="block text-xs text-muted-foreground">
+                  Group books into a new {noun}
+                </small>
+              </span>
+            </button>
           </div>
         </DrawerContent>
       </Drawer>
