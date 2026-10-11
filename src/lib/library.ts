@@ -68,22 +68,27 @@ export const ACCENTS: Record<string, string> = {
 export const SCAN_MATCHES = [
   { t: "Klara and the Sun", a: "Kazuo Ishiguro", g: "Fiction" },
   { t: "The Priory of the Orange Tree", a: "Samantha Shannon", g: "Fantasy" },
-  { t: "Tomorrow, and Tomorrow, and Tomorrow", a: "Gabrielle Zevin", g: "Fiction" },
-];
-
-export const LINK_MATCHES: Record<string, { t: string; a: string; g: string }> = {
-  amazon: { t: "Klara and the Sun", a: "Kazuo Ishiguro", g: "Fiction" },
-  waterstones: {
+  {
     t: "Tomorrow, and Tomorrow, and Tomorrow",
     a: "Gabrielle Zevin",
     g: "Fiction",
   },
-  bookdepository: {
-    t: "The Priory of the Orange Tree",
-    a: "Samantha Shannon",
-    g: "Fantasy",
-  },
-};
+];
+
+export const LINK_MATCHES: Record<string, { t: string; a: string; g: string }> =
+  {
+    amazon: { t: "Klara and the Sun", a: "Kazuo Ishiguro", g: "Fiction" },
+    waterstones: {
+      t: "Tomorrow, and Tomorrow, and Tomorrow",
+      a: "Gabrielle Zevin",
+      g: "Fiction",
+    },
+    bookdepository: {
+      t: "The Priory of the Orange Tree",
+      a: "Samantha Shannon",
+      g: "Fantasy",
+    },
+  };
 
 type SeedBook = {
   t: string;
@@ -98,46 +103,247 @@ type SeedBook = {
 };
 
 const SEED_LIB: SeedBook[] = [
-  { t: "Fourth Wing", a: "Rebecca Yarros", g: "Fantasy", col: "Living Room", shelf: "Shelf A", st: "Read" },
-  { t: "Iron Flame", a: "Rebecca Yarros", g: "Fantasy", col: "Living Room", shelf: "Shelf A", st: "Reading", prog: 45 },
-  { t: "Onyx Storm", a: "Rebecca Yarros", g: "Fantasy", col: "Living Room", shelf: "Shelf A", st: "To Read" },
-  { t: "The Name of the Wind", a: "Patrick Rothfuss", g: "Fantasy", col: "Living Room", shelf: "Shelf A", st: "Read" },
-  { t: "Circe", a: "Madeline Miller", g: "Fantasy", col: "Living Room", shelf: "Shelf A", st: "Reading", prog: 60 },
-  { t: "Brimstone", a: "Callie Hart", g: "Fantasy", col: "Living Room", shelf: "Shelf A", st: "To Read", cover: "/covers/brimstone.png", spine: "/covers/brimstone-spine.png" },
-  { t: "Educated", a: "Tara Westover", g: "Memoir", col: "Living Room", shelf: "Shelf B", st: "Read" },
-  { t: "Gone Girl", a: "Gillian Flynn", g: "Thriller", col: "Living Room", shelf: "Shelf B", st: "Lent out" },
-  { t: "The Silent Patient", a: "Alex Michaelides", g: "Thriller", col: "Living Room", shelf: "Shelf B", st: "Read" },
-  { t: "Dune", a: "Frank Herbert", g: "Sci-Fi", col: "Living Room", shelf: "Shelf B", st: "Read" },
-  { t: "Project Hail Mary", a: "Andy Weir", g: "Sci-Fi", col: "Office", shelf: "Shelf 1", st: "Read" },
-  { t: "The Martian", a: "Andy Weir", g: "Sci-Fi", col: "Office", shelf: "Shelf 1", st: "Read" },
-  { t: "Snow Crash", a: "Neal Stephenson", g: "Sci-Fi", col: "Office", shelf: "Shelf 1", st: "Read" },
-  { t: "The Pragmatic Programmer", a: "Hunt & Thomas", g: "Tech", col: "Office", shelf: "Shelf 1", st: "Reference" },
-  { t: "Sapiens", a: "Yuval Noah Harari", g: "History", col: "Office", shelf: "Shelf 2", st: "Reading", prog: 30 },
-  { t: "The Wager", a: "David Grann", g: "History", col: "Office", shelf: "Shelf 2", st: "To Read" },
-  { t: "1984", a: "George Orwell", g: "Classics", col: "Office", shelf: "Shelf 2", st: "Read" },
-  { t: "Brave New World", a: "Aldous Huxley", g: "Classics", col: "Office", shelf: "Shelf 2", st: "Read" },
-  { t: "Atomic Habits", a: "James Clear", g: "Non-fiction", col: "Bedroom", shelf: "Shelf", st: "Read" },
-  { t: "Why We Sleep", a: "Matthew Walker", g: "Non-fiction", col: "Bedroom", shelf: "Shelf", st: "Read" },
-  { t: "Quiet", a: "Susan Cain", g: "Non-fiction", col: "Bedroom", shelf: "Shelf", st: "To Read" },
-  { t: "Norwegian Wood", a: "Haruki Murakami", g: "Fiction", col: "Bedroom", shelf: "Shelf", st: "To Read" },
-  { t: "Killing Commendatore", a: "Haruki Murakami", g: "Fiction", col: "Bedroom", shelf: "Shelf", st: "Read" },
-  { t: "Piranesi", a: "Susanna Clarke", g: "Fantasy", col: "Bedroom", shelf: "Shelf", st: "To Read" },
-  { t: "Sea of Rust", a: "C. Robert Cargill", g: "Sci-Fi", col: "Bedroom", shelf: "Shelf", st: "To Read" },
+  {
+    t: "Fourth Wing",
+    a: "Rebecca Yarros",
+    g: "Fantasy",
+    col: "Living Room",
+    shelf: "Shelf A",
+    st: "Read",
+  },
+  {
+    t: "Iron Flame",
+    a: "Rebecca Yarros",
+    g: "Fantasy",
+    col: "Living Room",
+    shelf: "Shelf A",
+    st: "Reading",
+    prog: 45,
+  },
+  {
+    t: "Onyx Storm",
+    a: "Rebecca Yarros",
+    g: "Fantasy",
+    col: "Living Room",
+    shelf: "Shelf A",
+    st: "To Read",
+  },
+  {
+    t: "The Name of the Wind",
+    a: "Patrick Rothfuss",
+    g: "Fantasy",
+    col: "Living Room",
+    shelf: "Shelf A",
+    st: "Read",
+  },
+  {
+    t: "Circe",
+    a: "Madeline Miller",
+    g: "Fantasy",
+    col: "Living Room",
+    shelf: "Shelf A",
+    st: "Reading",
+    prog: 60,
+  },
+  {
+    t: "Brimstone",
+    a: "Callie Hart",
+    g: "Fantasy",
+    col: "Living Room",
+    shelf: "Shelf A",
+    st: "To Read",
+    cover: "/covers/brimstone.png",
+    spine: "/covers/brimstone-spine.png",
+  },
+  {
+    t: "Educated",
+    a: "Tara Westover",
+    g: "Memoir",
+    col: "Living Room",
+    shelf: "Shelf B",
+    st: "Read",
+  },
+  {
+    t: "Gone Girl",
+    a: "Gillian Flynn",
+    g: "Thriller",
+    col: "Living Room",
+    shelf: "Shelf B",
+    st: "Lent out",
+  },
+  {
+    t: "The Silent Patient",
+    a: "Alex Michaelides",
+    g: "Thriller",
+    col: "Living Room",
+    shelf: "Shelf B",
+    st: "Read",
+  },
+  {
+    t: "Dune",
+    a: "Frank Herbert",
+    g: "Sci-Fi",
+    col: "Living Room",
+    shelf: "Shelf B",
+    st: "Read",
+  },
+  {
+    t: "Project Hail Mary",
+    a: "Andy Weir",
+    g: "Sci-Fi",
+    col: "Office",
+    shelf: "Shelf 1",
+    st: "Read",
+  },
+  {
+    t: "The Martian",
+    a: "Andy Weir",
+    g: "Sci-Fi",
+    col: "Office",
+    shelf: "Shelf 1",
+    st: "Read",
+  },
+  {
+    t: "Snow Crash",
+    a: "Neal Stephenson",
+    g: "Sci-Fi",
+    col: "Office",
+    shelf: "Shelf 1",
+    st: "Read",
+  },
+  {
+    t: "The Pragmatic Programmer",
+    a: "Hunt & Thomas",
+    g: "Tech",
+    col: "Office",
+    shelf: "Shelf 1",
+    st: "Reference",
+  },
+  {
+    t: "Sapiens",
+    a: "Yuval Noah Harari",
+    g: "History",
+    col: "Office",
+    shelf: "Shelf 2",
+    st: "Reading",
+    prog: 30,
+  },
+  {
+    t: "The Wager",
+    a: "David Grann",
+    g: "History",
+    col: "Office",
+    shelf: "Shelf 2",
+    st: "To Read",
+  },
+  {
+    t: "1984",
+    a: "George Orwell",
+    g: "Classics",
+    col: "Office",
+    shelf: "Shelf 2",
+    st: "Read",
+  },
+  {
+    t: "Brave New World",
+    a: "Aldous Huxley",
+    g: "Classics",
+    col: "Office",
+    shelf: "Shelf 2",
+    st: "Read",
+  },
+  {
+    t: "Atomic Habits",
+    a: "James Clear",
+    g: "Non-fiction",
+    col: "Bedroom",
+    shelf: "Shelf",
+    st: "Read",
+  },
+  {
+    t: "Why We Sleep",
+    a: "Matthew Walker",
+    g: "Non-fiction",
+    col: "Bedroom",
+    shelf: "Shelf",
+    st: "Read",
+  },
+  {
+    t: "Quiet",
+    a: "Susan Cain",
+    g: "Non-fiction",
+    col: "Bedroom",
+    shelf: "Shelf",
+    st: "To Read",
+  },
+  {
+    t: "Norwegian Wood",
+    a: "Haruki Murakami",
+    g: "Fiction",
+    col: "Bedroom",
+    shelf: "Shelf",
+    st: "To Read",
+  },
+  {
+    t: "Killing Commendatore",
+    a: "Haruki Murakami",
+    g: "Fiction",
+    col: "Bedroom",
+    shelf: "Shelf",
+    st: "Read",
+  },
+  {
+    t: "Piranesi",
+    a: "Susanna Clarke",
+    g: "Fantasy",
+    col: "Bedroom",
+    shelf: "Shelf",
+    st: "To Read",
+  },
+  {
+    t: "Sea of Rust",
+    a: "C. Robert Cargill",
+    g: "Sci-Fi",
+    col: "Bedroom",
+    shelf: "Shelf",
+    st: "To Read",
+  },
 ];
 
 const SEED_WISH: SeedBook[] = [
-  { t: "Babel", a: "R. F. Kuang", g: "Fantasy", col: "To Buy", shelf: "Shelf A", st: "Wish" },
-  { t: "Hyperion", a: "Dan Simmons", g: "Sci-Fi", col: "To Buy", shelf: "Shelf A", st: "Wish" },
-  { t: "The Secret History", a: "Donna Tartt", g: "Fiction", col: "To Buy", shelf: "Shelf A", st: "Ordered" },
+  {
+    t: "Babel",
+    a: "R. F. Kuang",
+    g: "Fantasy",
+    col: "To Buy",
+    shelf: "Shelf A",
+    st: "Wish",
+  },
+  {
+    t: "Hyperion",
+    a: "Dan Simmons",
+    g: "Sci-Fi",
+    col: "To Buy",
+    shelf: "Shelf A",
+    st: "Wish",
+  },
+  {
+    t: "The Secret History",
+    a: "Donna Tartt",
+    g: "Fiction",
+    col: "To Buy",
+    shelf: "Shelf A",
+    st: "Ordered",
+  },
 ];
 
 export function freshState(): AppState {
   const books: Book[] = [];
   SEED_LIB.forEach((b, i) =>
-    books.push({ ...b, id: "l" + i, wish: false } as Book)
+    books.push({ ...b, id: "l" + i, wish: false } as Book),
   );
   SEED_WISH.forEach((b, i) =>
-    books.push({ ...b, id: "w" + i, wish: true } as Book)
+    books.push({ ...b, id: "w" + i, wish: true } as Book),
   );
   return {
     books,
@@ -168,7 +374,7 @@ export function loadState(): AppState {
           typeof (b as Book).col === "string" &&
           typeof (b as Book).shelf === "string" &&
           typeof (b as Book).st === "string" &&
-          typeof (b as Book).wish === "boolean"
+          typeof (b as Book).wish === "boolean",
       );
     const okCols =
       !!parsed &&
@@ -178,7 +384,7 @@ export function loadState(): AppState {
           c &&
           typeof c === "object" &&
           typeof (c as Collection).name === "string" &&
-          typeof (c as Collection).wish === "boolean"
+          typeof (c as Collection).wish === "boolean",
       );
     if (
       parsed &&
@@ -226,7 +432,7 @@ export function statusList(b: Book): string[] {
 export function makeCover(
   title: string,
   author: string,
-  genre: string
+  genre: string,
 ): string {
   const c = document.createElement("canvas");
   c.width = 300;

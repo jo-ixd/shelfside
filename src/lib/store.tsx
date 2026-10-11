@@ -64,12 +64,12 @@ export function LibraryProvider({ children }: React.PropsWithChildren) {
   const state = React.useSyncExternalStore(
     subscribe,
     getSnapshot,
-    getServerSnapshot
+    getServerSnapshot,
   );
 
   const update = React.useCallback(
     (fn: (draft: AppState) => void) => commit(fn),
-    []
+    [],
   );
 
   const value = React.useMemo<LibraryContext>(
@@ -79,22 +79,18 @@ export function LibraryProvider({ children }: React.PropsWithChildren) {
       books: state?.books ?? [],
       cols: state?.cols ?? [],
     }),
-    [state, update]
+    [state, update],
   );
 
   return (
-    <LibraryContext.Provider value={value}>
-      {children}
-    </LibraryContext.Provider>
+    <LibraryContext.Provider value={value}>{children}</LibraryContext.Provider>
   );
 }
 
 /* Keep the accent in sync with the profile, like the prototype's applyTheme(). */
 export function useAccent() {
   const { state } = useLibrary();
-  const accent = state
-    ? ACCENTS[state.profile.accent] || ACCENTS.Amber
-    : null;
+  const accent = state ? ACCENTS[state.profile.accent] || ACCENTS.Amber : null;
   React.useEffect(() => {
     if (accent) {
       document.documentElement.style.setProperty("--primary", accent);

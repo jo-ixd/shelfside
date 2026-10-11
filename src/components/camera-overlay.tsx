@@ -49,15 +49,12 @@ export function CameraOverlay({
       return;
     }
     el.style.opacity = "1";
-    const anim = el.animate(
-      [{ top: "10%" }, { top: "88%" }],
-      {
-        duration: 1600,
-        direction: "alternate",
-        iterations: Infinity,
-        easing: "ease-in-out",
-      }
-    );
+    const anim = el.animate([{ top: "10%" }, { top: "88%" }], {
+      duration: 1600,
+      direction: "alternate",
+      iterations: Infinity,
+      easing: "ease-in-out",
+    });
     return () => anim.cancel();
   }, [open, mode, enhancing]);
 

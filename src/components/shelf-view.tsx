@@ -6,10 +6,7 @@ import { BookDetailSheet } from "@/components/book-detail-sheet";
 import { PageHeader } from "@/components/page-header";
 import { BookTile, Cover } from "@/components/book-tile";
 import { Input } from "@/components/ui/input";
-import {
-  bookWidth,
-  type Book,
-} from "@/lib/library";
+import { bookWidth, type Book } from "@/lib/library";
 import { buzz, useLibrary } from "@/lib/store";
 
 type DropTarget = { shelf: string; idx: number };
@@ -49,7 +46,9 @@ export function ShelfView() {
   const dropRef = useRef<DropTarget | null>(null);
 
   const q = searchQ.trim().toLowerCase();
-  const all = state ? state.books.filter((b) => b.wish === wish && b.col === col) : [];
+  const all = state
+    ? state.books.filter((b) => b.wish === wish && b.col === col)
+    : [];
 
   /* Stop page scroll mid-gesture, like the prototype's touchmove guard. */
   useEffect(() => {
@@ -74,16 +73,19 @@ export function ShelfView() {
   }
 
   function updateDropTarget(e: PointerEvent) {
-    const under = document.elementFromPoint(e.clientX, e.clientY) as
-      | HTMLElement
-      | null;
+    const under = document.elementFromPoint(
+      e.clientX,
+      e.clientY,
+    ) as HTMLElement | null;
     const shelfEl = under?.closest<HTMLElement>("[data-shelf]") ?? null;
     if (!shelfEl || !shelfEl.dataset.shelf) {
       if (dropRef.current) setDrop(null);
       return;
     }
     const shelf = shelfEl.dataset.shelf;
-    const books = Array.from(shelfEl.querySelectorAll<HTMLElement>("[data-book]"));
+    const books = Array.from(
+      shelfEl.querySelectorAll<HTMLElement>("[data-book]"),
+    );
     let idx = books.length;
     for (let i = 0; i < books.length; i++) {
       const r = books[i].getBoundingClientRect();
@@ -109,7 +111,7 @@ export function ShelfView() {
         if (!b.w) b.w = bookWidth(b.t);
         b._new = true;
         const list = d.books.filter(
-          (x) => x.wish === wish && x.col === col && x.shelf === target.shelf
+          (x) => x.wish === wish && x.col === col && x.shelf === target.shelf,
         );
         if (target.idx < 0 || target.idx >= list.length) {
           d.books.push(b);
@@ -152,7 +154,9 @@ export function ShelfView() {
       const dy = ev.clientY - g.sy;
       const d = Math.hypot(dx, dy);
       if (g.dragging) {
-        setDrag((prev) => (prev ? { ...prev, x: ev.clientX, y: ev.clientY } : prev));
+        setDrag((prev) =>
+          prev ? { ...prev, x: ev.clientX, y: ev.clientY } : prev,
+        );
         updateDropTarget(ev);
         return;
       }
@@ -228,7 +232,7 @@ export function ShelfView() {
   let matching = 0;
   byShelf.forEach((list) => {
     matching += list.filter(
-      (b) => !q || (b.t + " " + b.a + " " + b.g).toLowerCase().includes(q)
+      (b) => !q || (b.t + " " + b.a + " " + b.g).toLowerCase().includes(q),
     ).length;
   });
 
@@ -266,7 +270,7 @@ export function ShelfView() {
                 <div
                   key="gap"
                   className="pointer-events-none h-[156px] w-[104px] shrink-0 rounded-md border-2 border-dashed border-primary/70 bg-primary/10"
-                />
+                />,
               );
               gapShown = true;
             }
@@ -280,7 +284,7 @@ export function ShelfView() {
                   dimmed={!matches(b)}
                   grabbed={grabbedId === b.id}
                 />
-              </div>
+              </div>,
             );
           });
           if (draggingHere && !gapShown) {
@@ -288,7 +292,7 @@ export function ShelfView() {
               <div
                 key="gap"
                 className="pointer-events-none h-[156px] w-[104px] shrink-0 rounded-md border-2 border-dashed border-primary/70 bg-primary/10"
-              />
+              />,
             );
           }
           return (

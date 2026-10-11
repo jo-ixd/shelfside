@@ -26,7 +26,9 @@ export function NewCollectionView() {
   function create() {
     const trimmed = name.trim();
     if (!trimmed) return;
-    if (state?.cols.some((c) => c.name.toLowerCase() === trimmed.toLowerCase())) {
+    if (
+      state?.cols.some((c) => c.name.toLowerCase() === trimmed.toLowerCase())
+    ) {
       toast(`"${trimmed}" already exists`);
       return;
     }

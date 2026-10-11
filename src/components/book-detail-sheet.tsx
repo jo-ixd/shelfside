@@ -2,11 +2,7 @@
 
 import { useRef, useState } from "react";
 import { CameraIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import {
-  Drawer,
-  DrawerContent,
-  DrawerTitle,
-} from "@/components/ui/drawer";
+import { Drawer, DrawerContent, DrawerTitle } from "@/components/ui/drawer";
 import {
   colourOf,
   READING_COLOR,

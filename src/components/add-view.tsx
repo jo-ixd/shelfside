@@ -38,7 +38,6 @@ import {
 } from "@/lib/library";
 import { buzz, useLibrary } from "@/lib/store";
 
-const MATCHED = { bg: "#2a3b2a", border: "#3f5a3f", text: "#a8d8b0" };
 const GENRES = Object.keys(GENRE_COLORS);
 
 export function AddView() {
@@ -67,10 +66,7 @@ export function AddView() {
   const cols = state?.cols.filter((c) => c.wish === wish) ?? [];
   const col = colValue || cols[0]?.name || "";
 
-  function prefill(
-    m: { t: string; a: string; g: string },
-    note: string
-  ) {
+  function prefill(m: { t: string; a: string; g: string }, note: string) {
     setTitle(m.t);
     setAuthor(m.a || "");
     setGenre(GENRES.includes(m.g) ? m.g : "Other");
@@ -106,7 +102,12 @@ export function AddView() {
     };
     if (coverData) nb.cover = coverData;
     const ok = update((d) => {
-      if (!d.cols.some((c) => c.name.toLowerCase() === nb.col.toLowerCase() && c.wish === wish)) {
+      if (
+        !d.cols.some(
+          (c) =>
+            c.name.toLowerCase() === nb.col.toLowerCase() && c.wish === wish,
+        )
+      ) {
         d.cols.push({ name: nb.col, wish });
       }
       d.books.push(nb);
@@ -133,7 +134,7 @@ export function AddView() {
     setTimeout(() => {
       setFetching(false);
       const host = Object.keys(LINK_MATCHES).find((h) =>
-        u.toLowerCase().includes(h)
+        u.toLowerCase().includes(h),
       );
       const m = host ? LINK_MATCHES[host] : nextMatch();
       prefill(m, "Details scraped from the page — edit anything");
@@ -154,10 +155,7 @@ export function AddView() {
       />
       <div className="px-4 pt-3">
         {matched ? (
-          <p
-            className="mb-2 flex items-center gap-2 rounded-lg px-3 py-2 text-base"
-            style={{ background: MATCHED.bg, border: `1px solid ${MATCHED.border}`, color: MATCHED.text }}
-          >
+          <p className="mb-2 flex items-center gap-2 rounded-lg border border-emerald-800 bg-emerald-950 px-3 py-2 text-base text-emerald-200">
             <CheckCircleIcon className="size-4 shrink-0" />
             {matched}
           </p>
@@ -254,10 +252,7 @@ export function AddView() {
             <Label className="text-base text-muted-foreground">
               Collection
             </Label>
-            <Select
-              value={col}
-              onValueChange={(v) => setColValue(v as string)}
-            >
+            <Select value={col} onValueChange={(v) => setColValue(v as string)}>
               <SelectTrigger className="mt-1 h-10 w-full rounded-lg">
                 <SelectValue />
               </SelectTrigger>
@@ -287,9 +282,7 @@ export function AddView() {
           </div>
         </div>
 
-        <Label className="mt-2.5 text-base text-muted-foreground">
-          Genre
-        </Label>
+        <Label className="mt-2.5 text-base text-muted-foreground">Genre</Label>
         <Select value={genre} onValueChange={(v) => setGenre(v as string)}>
           <SelectTrigger className="mt-1 h-10 w-full rounded-lg">
             <SelectValue />
@@ -304,7 +297,10 @@ export function AddView() {
         </Select>
 
         {showSave ? (
-          <Button onClick={save} className="mt-4 h-12 w-full rounded-[10px] text-base font-bold">
+          <Button
+            onClick={save}
+            className="mt-4 h-12 w-full rounded-[10px] text-base font-bold"
+          >
             {wish ? "Add to wishlist" : "Put it on the shelf"}
           </Button>
         ) : null}
@@ -313,7 +309,9 @@ export function AddView() {
       <Drawer open={chooser} onOpenChange={setChooser}>
         <DrawerContent className="p-4">
           <DrawerHeader className="p-0 pb-2">
-            <DrawerTitle className="font-serif text-lg">Add a cover</DrawerTitle>
+            <DrawerTitle className="font-serif text-lg">
+              Add a cover
+            </DrawerTitle>
           </DrawerHeader>
           <div className="flex flex-col gap-2.5">
             <button
@@ -364,7 +362,7 @@ export function AddView() {
           onShot={() => {
             setCamMode(null);
             setCoverData(
-              makeCover(title.trim() || "Untitled", author.trim(), genre)
+              makeCover(title.trim() || "Untitled", author.trim(), genre),
             );
             toast("AI cover generated (prototype)");
             buzz(20);
