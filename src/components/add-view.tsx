@@ -38,7 +38,6 @@ import {
 } from "@/lib/library";
 import { buzz, useLibrary } from "@/lib/store";
 
-const MATCHED = { bg: "#2a3b2a", border: "#3f5a3f", text: "#a8d8b0" };
 const GENRES = Object.keys(GENRE_COLORS);
 
 export function AddView() {
@@ -154,10 +153,7 @@ export function AddView() {
       />
       <div className="px-4 pt-3">
         {matched ? (
-          <p
-            className="mb-2 flex items-center gap-2 rounded-lg px-3 py-2 text-base"
-            style={{ background: MATCHED.bg, border: `1px solid ${MATCHED.border}`, color: MATCHED.text }}
-          >
+          <p className="mb-2 flex items-center gap-2 rounded-lg border border-emerald-800 bg-emerald-950 px-3 py-2 text-base text-emerald-200">
             <CheckCircleIcon className="size-4 shrink-0" />
             {matched}
           </p>
