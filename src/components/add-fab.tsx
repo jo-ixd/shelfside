@@ -48,7 +48,7 @@ export function AddFab() {
           buzz(10);
           setOpen(true);
         }}
-        className="fixed right-5 bottom-[78px] z-40 flex size-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg shadow-black/50"
+        className="fixed right-[max(1.25rem,calc(50%-21rem+1.25rem))] bottom-[78px] z-40 flex size-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg shadow-black/50"
       >
         <PlusIcon className="size-7" />
       </button>

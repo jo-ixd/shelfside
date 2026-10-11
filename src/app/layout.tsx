@@ -38,7 +38,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <ThemeProvider>
           <LibraryProvider>
             <AccentSync />
-            {children}
+            {/* One centered column keeps every screen size working: rails,
+                headers and the fixed chrome all anchor to it on desktop. */}
+            <div className="mx-auto w-full max-w-2xl">{children}</div>
             <BottomNav />
             <AddFab />
             <Toaster position="bottom-center" />

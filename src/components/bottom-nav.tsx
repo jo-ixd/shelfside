@@ -23,7 +23,7 @@ export function BottomNav() {
   const pathname = usePathname();
   return (
     <nav
-      className="fixed inset-x-0 bottom-0 z-40 flex border-t border-border bg-background/90 pb-[env(safe-area-inset-bottom)] backdrop-blur-md"
+      className="fixed bottom-0 z-40 flex border-t border-border bg-background/90 pb-[env(safe-area-inset-bottom)] backdrop-blur-md right-[max(0px,calc(50%-21rem))] left-[max(0px,calc(50%-21rem))]"
       aria-label="Main navigation"
     >
       {TABS.map((tab) => {
