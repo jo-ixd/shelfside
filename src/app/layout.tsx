@@ -6,6 +6,7 @@ import { LibraryProvider } from "@/lib/store";
 import { AccentSync } from "@/components/accent-sync";
 import { BottomNav } from "@/components/bottom-nav";
 import { AddFab } from "@/components/add-fab";
+import { AppSidebar } from "@/components/app-sidebar";
 import { Toaster } from "@/components/ui/sonner";
 
 const geistSans = Geist({
@@ -34,11 +35,14 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={`dark ${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="flex min-h-full flex-col pb-24 text-base">
+      <body className="flex min-h-full flex-col pb-24 text-base md:pb-0">
         <ThemeProvider>
           <LibraryProvider>
             <AccentSync />
-            {children}
+            {/* Sidebar owns desktop navigation; content uses the full width
+                to its right instead of a narrow centred column. */}
+            <div className="md:pl-60">{children}</div>
+            <AppSidebar />
             <BottomNav />
             <AddFab />
             <Toaster position="bottom-center" />

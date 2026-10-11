@@ -47,7 +47,6 @@ export function AddView() {
   const { state, update } = useLibrary();
 
   const ctx = params.get("ctx") === "wishlist" ? "wishlist" : "library";
-  const mode = params.get("mode") === "scan" || params.get("mode") === "link" ? (params.get("mode") as "scan" | "link") : "manual";
   const wish = ctx === "wishlist";
 
   const [title, setTitle] = useState("");
@@ -57,7 +56,7 @@ export function AddView() {
   const [colValue, setColValue] = useState<string>("");
   const [coverData, setCoverData] = useState<string | null>(null);
   const [matched, setMatched] = useState<string | null>(null);
-  const [cam, setCam] = useState(mode === "scan");
+  const [camMode, setCamMode] = useState<null | "scan" | "ai">(null);
   const [chooser, setChooser] = useState(false);
   const [fetching, setFetching] = useState(false);
   const [url, setUrl] = useState("");
@@ -149,14 +148,14 @@ export function AddView() {
   return (
     <main>
       <PageHeader
-        title={mode === "scan" ? "Scan ISBN" : mode === "link" ? "Add from link" : "Add manually"}
+        title="Add a book"
         sub={wish ? "to your wishlist" : "to your library"}
         back={back}
       />
       <div className="px-4 pt-3">
         {matched ? (
           <p
-            className="mb-2 flex items-center gap-2 rounded-lg px-3 py-2 text-sm"
+            className="mb-2 flex items-center gap-2 rounded-lg px-3 py-2 text-base"
             style={{ background: MATCHED.bg, border: `1px solid ${MATCHED.border}`, color: MATCHED.text }}
           >
             <CheckCircleIcon className="size-4 shrink-0" />
@@ -186,9 +185,9 @@ export function AddView() {
             )}
           </button>
           <div className="min-w-0 flex-1 pt-1">
-            {mode === "link" ? (
+            {wish ? (
               <div className="mb-2">
-                <Label className="text-sm text-muted-foreground">
+                <Label className="text-base text-muted-foreground">
                   Product page link
                 </Label>
                 <div className="mt-1 flex gap-2">
@@ -205,12 +204,25 @@ export function AddView() {
                 </div>
               </div>
             ) : null}
-            <Label
-              htmlFor="f-title"
-              className="text-sm text-muted-foreground"
-            >
-              Title
-            </Label>
+            <div className="flex items-center justify-between">
+              <Label
+                htmlFor="f-title"
+                className="text-base text-muted-foreground"
+              >
+                Title
+              </Label>
+              <button
+                type="button"
+                onClick={() => {
+                  buzz(10);
+                  setCamMode("scan");
+                }}
+                className="flex items-center gap-1 text-base text-primary"
+              >
+                <CameraIcon className="size-4" />
+                Scan ISBN
+              </button>
+            </div>
             <Input
               id="f-title"
               value={title}
@@ -222,7 +234,7 @@ export function AddView() {
             />
             <Label
               htmlFor="f-author"
-              className="mt-2.5 text-sm text-muted-foreground"
+              className="mt-2.5 text-base text-muted-foreground"
             >
               Author
             </Label>
@@ -239,7 +251,7 @@ export function AddView() {
 
         <div className="mt-1 flex gap-2.5">
           <div className="flex-1">
-            <Label className="text-sm text-muted-foreground">
+            <Label className="text-base text-muted-foreground">
               Collection
             </Label>
             <Select
@@ -261,7 +273,7 @@ export function AddView() {
           <div className="flex-1">
             <Label
               htmlFor="f-shelf"
-              className="text-sm text-muted-foreground"
+              className="text-base text-muted-foreground"
             >
               Shelf
             </Label>
@@ -275,7 +287,7 @@ export function AddView() {
           </div>
         </div>
 
-        <Label className="mt-2.5 text-sm text-muted-foreground">
+        <Label className="mt-2.5 text-base text-muted-foreground">
           Genre
         </Label>
         <Select value={genre} onValueChange={(v) => setGenre(v as string)}>
@@ -310,12 +322,12 @@ export function AddView() {
                 setChooser(false);
                 setTimeout(() => fileRef.current?.click(), 60);
               }}
-              className="flex w-full items-center gap-3 rounded-xl border border-border bg-secondary px-3.5 py-3.5 text-left text-sm"
+              className="flex w-full items-center gap-3 rounded-xl border border-border bg-secondary px-3.5 py-3.5 text-left text-base"
             >
               <PhotoIcon className="size-6 shrink-0 text-primary" />
               <span>
                 Upload photo
-                <small className="block text-sm text-muted-foreground">
+                <small className="block text-base text-muted-foreground">
                   Your own picture for odd editions
                 </small>
               </span>
@@ -324,14 +336,14 @@ export function AddView() {
               type="button"
               onClick={() => {
                 setChooser(false);
-                setTimeout(() => setCam(true), 60);
+                setTimeout(() => setCamMode("ai"), 60);
               }}
-              className="flex w-full items-center gap-3 rounded-xl border border-border bg-secondary px-3.5 py-3.5 text-left text-sm"
+              className="flex w-full items-center gap-3 rounded-xl border border-border bg-secondary px-3.5 py-3.5 text-left text-base"
             >
               <SparklesIcon className="size-6 shrink-0 text-primary" />
               <span>
                 Generate with AI
-                <small className="block text-sm text-muted-foreground">
+                <small className="block text-base text-muted-foreground">
                   Snap the real cover, let AI flatten it
                 </small>
               </span>
@@ -340,17 +352,17 @@ export function AddView() {
         </DrawerContent>
       </Drawer>
 
-      {cam ? (
+      {camMode ? (
         <CameraOverlay
           open
-          mode={mode === "scan" ? "scan" : "ai"}
-          onCancel={() => setCam(false)}
+          mode={camMode}
+          onCancel={() => setCamMode(null)}
           onScan={() => {
-            setCam(false);
+            setCamMode(null);
             prefill(nextMatch(), "ISBN matched — details fetched from lookup");
           }}
           onShot={() => {
-            setCam(false);
+            setCamMode(null);
             setCoverData(
               makeCover(title.trim() || "Untitled", author.trim(), genre)
             );

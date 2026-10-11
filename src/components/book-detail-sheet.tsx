@@ -160,7 +160,7 @@ export function BookDetailSheet({
         <button
           type="button"
           onClick={() => cycleStatus(book)}
-          className="mt-2.5 w-fit rounded-full border border-border bg-secondary px-3.5 py-1.5 text-sm"
+          className="mt-2.5 w-fit rounded-full border border-border bg-secondary px-3.5 py-1.5 text-base"
         >
           {book.st}
         </button>
@@ -188,7 +188,7 @@ export function BookDetailSheet({
         <button
           type="button"
           onClick={() => removeBook(book)}
-          className="mt-3.5 w-full rounded-lg border border-destructive/40 px-3.5 py-2 text-sm text-destructive"
+          className="mt-3.5 w-full rounded-lg border border-destructive/40 px-3.5 py-2 text-base text-destructive"
         >
           {armed
             ? `Tap again to remove \u201C${book.t}\u201D`

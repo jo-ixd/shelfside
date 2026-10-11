@@ -72,7 +72,7 @@ export function CameraOverlay({
 
   return (
     <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-[#0c0a08]">
-      <p className="mb-5 px-6 text-center text-sm text-[#cfc5b0]">{msg}</p>
+      <p className="mb-5 px-6 text-center text-base text-[#cfc5b0]">{msg}</p>
       <div className="relative h-[170px] w-[250px]">
         <span className="absolute top-0 left-0 size-7 rounded-[10px_0_0_0] border-3 border-primary border-r-0 border-b-0" />
         <span className="absolute top-0 right-0 size-7 rounded-[0_10px_0_0] border-3 border-primary border-l-0 border-b-0" />
@@ -97,7 +97,7 @@ export function CameraOverlay({
       <button
         type="button"
         onClick={onCancel}
-        className="mt-4 text-sm text-muted-foreground/70"
+        className="mt-4 text-base text-muted-foreground/70"
       >
         Cancel
       </button>
