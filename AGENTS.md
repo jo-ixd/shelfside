@@ -26,7 +26,7 @@ Never merge a pull request — not even your own, not even when CI is green. The
 
 Labels: when opening a PR or issue, tag it only with labels that already exist in the repo (`gh label list`). Never invent, create, or rename labels — if nothing fits, leave it unlabelled.
 
-Reviewing: when asked to review a PR, follow the same workflow every time — fetch the diff with `gh pr diff`, read the full changed files (not just the hunks), check the labels against the policy above, verify the conventions in this file, then post findings with `gh pr review` (inline line comments where possible) ending with a clear verdict: approve, request changes, or comment.
+Reviewing: when asked to review a PR, follow the same workflow every time — fetch the diff with `gh pr diff`, read the full changed files (not just the hunks), check the labels against the policy above, verify the conventions in this file, then post findings with `gh pr review` (inline line comments where possible) ending with a clear verdict: approve, request changes, or comment. If you're reviewing code, leave your comments on the PR itself so they're visible in one place — not in chat.
 
 ## Conventions
 
