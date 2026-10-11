@@ -7,3 +7,21 @@ This version has breaking changes — APIs, conventions, and file structure may 
 This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
 
 <!-- END:nextjs-agent-rules -->
+
+## Commands
+
+Run from the repo root. `npm install` first if `node_modules/` is missing. If `tsc` reports `LayoutProps` or other route types as missing, run `npx next typegen` — they are generated, not checked in.
+
+- `npm run dev` — dev server on http://localhost:3000
+- `npm run lint` — ESLint (flat config, `eslint-config-next`). Must be clean before every commit.
+- `npm run format` — Prettier over the whole repo; `npm run format:check` verifies without writing.
+- `npm run test` — Vitest, single run; `npm run test:watch` for watch mode. Unit tests live next to the module they cover (`src/lib/*.test.ts`).
+- `npm run build` — production build; run after any structural change (new/deleted routes or files).
+
+Expected green before pushing: `npm run lint && npm run format:check && npm run test && npm run build`.
+
+## Conventions
+
+- Styling is Tailwind v4 utility classes only. Inline `style={{...}}` is allowed only for genuinely runtime-dynamic values (per-book colours, drag position, progress width). Never hardcode hex constants in TS files — use Tailwind classes or shadcn theme tokens (`bg-primary`, `text-muted-foreground`, …).
+- shadcn components live in `src/components/ui/` and are added with the `shadcn` CLI only when actually needed — don't scaffold unused ones.
+- No parallel data stores: `src/lib/store.tsx` is the single app store; data-model helpers live in `src/lib/library.ts`.
