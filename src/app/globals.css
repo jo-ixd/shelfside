@@ -128,3 +128,23 @@
     @apply font-sans;
   }
 }
+
+/* Homepage prototype directions: deep espresso-brown scope. Scoped here so
+   only the homepage prototype picks it up; the chrome sits in dark brown and
+   the covers keep their vivid library colours on top. */
+.home-proto {
+  --background: oklch(0.17 0.02 60);
+  --foreground: oklch(0.94 0.02 80);
+  --card: oklch(0.21 0.026 62);
+  --card-foreground: oklch(0.94 0.02 80);
+  --popover: oklch(0.23 0.028 62);
+  --popover-foreground: oklch(0.94 0.02 80);
+  --secondary: oklch(0.26 0.026 64);
+  --secondary-foreground: oklch(0.94 0.02 80);
+  --muted: oklch(0.21 0.026 62);
+  --muted-foreground: oklch(0.68 0.035 75);
+  --accent: oklch(0.3 0.03 66);
+  --accent-foreground: oklch(0.94 0.02 80);
+  --border: oklch(0.31 0.03 66);
+  --input: oklch(0.31 0.03 66);
+}
