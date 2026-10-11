@@ -1,5 +1,5 @@
-import { HomeDirections } from "@/components/home-directions";
+import { LibraryHome } from "@/components/library-home";
 
 export default function Home() {
-  return <HomeDirections />;
+  return <LibraryHome />;
 }
