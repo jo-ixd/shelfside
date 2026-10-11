@@ -1,9 +1,5 @@
-import { CollectionsGrid } from "@/components/collections-grid";
+import { HomeDirections } from "@/components/home-directions";
 
 export default function Home() {
-  return (
-    <main>
-      <CollectionsGrid wish={false} />
-    </main>
-  );
+  return <HomeDirections />;
 }
