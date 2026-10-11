@@ -39,11 +39,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <ThemeProvider>
           <LibraryProvider>
             <AccentSync />
-            {/* Sidebar owns desktop navigation; the content column sits to
-                its right, centred in the remaining space. */}
-            <div className="md:pl-60">
-              <div className="mx-auto w-full max-w-2xl">{children}</div>
-            </div>
+            {/* Sidebar owns desktop navigation; content uses the full width
+                to its right instead of a narrow centred column. */}
+            <div className="md:pl-60">{children}</div>
             <AppSidebar />
             <BottomNav />
             <AddFab />

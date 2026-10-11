@@ -36,6 +36,17 @@ export function AppSidebar() {
     <>
       <aside className="fixed inset-y-0 left-0 z-40 hidden w-60 flex-col border-r border-border bg-sidebar px-3 py-5 md:flex">
         <p className="px-2 font-serif text-xl">Shelfside</p>
+        <Button
+          size="lg"
+          className="mt-5 w-full justify-center"
+          onClick={() => {
+            buzz(10);
+            setAddOpen(true);
+          }}
+        >
+          <PlusIcon data-icon="inline-start" />
+          Add
+        </Button>
         <nav aria-label="Main navigation" className="mt-6 flex flex-col gap-1">
           {TABS.map((tab) => {
             const on = pathname === tab.href;
@@ -57,19 +68,6 @@ export function AppSidebar() {
             );
           })}
         </nav>
-        <div className="mt-auto">
-          <Button
-            size="lg"
-            className="w-full justify-center"
-            onClick={() => {
-              buzz(10);
-              setAddOpen(true);
-            }}
-          >
-            <PlusIcon data-icon="inline-start" />
-            Add
-          </Button>
-        </div>
       </aside>
       <AddMenu ctx={ctx} open={addOpen} onOpenChange={setAddOpen} />
     </>
