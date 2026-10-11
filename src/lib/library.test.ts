@@ -28,10 +28,14 @@ function makeBook(overrides: Partial<Book> = {}): Book {
   };
 }
 
-/* loadState/saveState touch localStorage, which node's environment lacks. */
+/* loadState/saveState touch localStorage, which node's environment lacks.
+   loadState guards on `typeof window !== "undefined"` before reading, so the
+   window stub is what makes the storage path reachable under environment:
+   "node". */
 const backing = new Map<string, string>();
 beforeEach(() => {
   backing.clear();
+  vi.stubGlobal("window", {});
   vi.stubGlobal("localStorage", {
     getItem: (k: string) => backing.get(k) ?? null,
     setItem: (k: string, v: string) => void backing.set(k, v),
@@ -102,8 +106,14 @@ describe("freshState", () => {
 });
 
 describe("saveState / loadState", () => {
-  it("round-trips state through localStorage", () => {
+  it("round-trips a mutated state through localStorage", () => {
     const state: AppState = freshState();
+    state.books.push(makeBook({ id: "extra", t: "Extra Book" }));
+    state.profile.accent = "Teal";
+    /* Guard against the test passing vacuously: the saved state must differ
+       from the fallback, so a pass can only come from the storage round-trip. */
+    expect(state).not.toEqual(freshState());
+
     expect(saveState(state)).toBe(true);
     expect(JSON.parse(backing.get(STORAGE_KEY)!)).toEqual(state);
     expect(loadState()).toEqual(state);
