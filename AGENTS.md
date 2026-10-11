@@ -31,6 +31,8 @@ Labels: when opening a PR or issue, tag it only with labels that already exist i
 - **Every PR also gets `ai review`** — per the label's description, all PRs need an AI pass before human review.
 - Add `enhancement`/`bug`/`documentation`/`UI` where they fit; multiple labels are fine.
 
+Reviewing: when asked to review a PR, follow the same workflow every time — fetch the diff with `gh pr diff`, read the full changed files (not just the hunks), check the labels against the policy above, verify the conventions in this file, then post findings with `gh pr review` (inline line comments where possible) ending with a clear verdict: approve, request changes, or comment.
+
 ## Conventions
 
 - Styling is Tailwind v4 utility classes only. Inline `style={{...}}` is allowed only for genuinely runtime-dynamic values (per-book colours, drag position, progress width). Never hardcode hex constants in TS files — use Tailwind classes or shadcn theme tokens (`bg-primary`, `text-muted-foreground`, …).
