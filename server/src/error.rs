@@ -1,6 +1,9 @@
 use axum::http::StatusCode;
 use axum::response::{IntoResponse, Response};
 
+// Clone is not derivable: the Internal variant holds a sqlx::Error, whose
+// database-error payloads aren't clonable upstream.
+#[derive(Debug)]
 pub enum AppError {
     BadRequest(String),
     Unauthorized,
@@ -29,6 +32,16 @@ impl IntoResponse for AppError {
 
 impl From<sqlx::Error> for AppError {
     fn from(e: sqlx::Error) -> Self {
-        AppError::Internal(e)
+        // sqlx errors that represent *client* mistakes must not surface as
+        // HTTP 500. RowNotFound is the caller asking for a missing row, and
+        // unique violations are user-visible conflicts (e.g. duplicate
+        // email on register). Everything else is a genuine server fault.
+        match e {
+            sqlx::Error::RowNotFound => AppError::NotFound,
+            sqlx::Error::Database(ref d) if d.is_unique_violation() => {
+                AppError::Conflict("already exists".into())
+            }
+            other => AppError::Internal(other),
+        }
     }
 }
