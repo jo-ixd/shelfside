@@ -1388,7 +1388,12 @@ export type ApiBook = {
   cover_url: string | null;
 };
 
-export type ApiGroup = { id: number; name: string; auto: boolean; books: ApiBook[] };
+export type ApiGroup = {
+  id: number;
+  name: string;
+  auto: boolean;
+  books: ApiBook[];
+};
 export type ApiCollection = { id: number; name: string; groups: ApiGroup[] };
 export type Library = { collections: ApiCollection[]; unsorted: ApiBook[] };
 export type ApiUser = { id: number; email: string; name: string };
@@ -1409,32 +1414,57 @@ async function api<T>(path: string, init?: RequestInit): Promise<T> {
 export const getLibrary = () => api<Library>("/api/library");
 export const getMe = () => api<ApiUser>("/api/me");
 export const registerUser = (email: string, password: string) =>
-  api<ApiUser>("/api/auth/register", { method: "POST", body: JSON.stringify({ email, password }) });
+  api<ApiUser>("/api/auth/register", {
+    method: "POST",
+    body: JSON.stringify({ email, password }),
+  });
 export const loginUser = (email: string, password: string) =>
-  api<ApiUser>("/api/auth/login", { method: "POST", body: JSON.stringify({ email, password }) });
-export const logoutUser = () => api<void>("/api/auth/logout", { method: "POST" });
+  api<ApiUser>("/api/auth/login", {
+    method: "POST",
+    body: JSON.stringify({ email, password }),
+  });
+export const logoutUser = () =>
+  api<void>("/api/auth/logout", { method: "POST" });
 
 export const addCollection = (name: string) =>
-  api<ApiCollection>("/api/collections", { method: "POST", body: JSON.stringify({ name }) });
+  api<ApiCollection>("/api/collections", {
+    method: "POST",
+    body: JSON.stringify({ name }),
+  });
 export const renameCollection = (id: number, name: string) =>
-  api<ApiCollection>(`/api/collections/${id}`, { method: "PATCH", body: JSON.stringify({ name }) });
+  api<ApiCollection>(`/api/collections/${id}`, {
+    method: "PATCH",
+    body: JSON.stringify({ name }),
+  });
 export const deleteCollection = (id: number) =>
   api<void>(`/api/collections/${id}`, { method: "DELETE" });
 export const addGroup = (collectionId: number, name: string) =>
-  api<ApiGroup>(`/api/collections/${collectionId}/groups`, { method: "POST", body: JSON.stringify({ name }) });
+  api<ApiGroup>(`/api/collections/${collectionId}/groups`, {
+    method: "POST",
+    body: JSON.stringify({ name }),
+  });
 export const renameGroup = (id: number, name: string) =>
-  api<void>(`/api/groups/${id}`, { method: "PATCH", body: JSON.stringify({ name }) });
+  api<void>(`/api/groups/${id}`, {
+    method: "PATCH",
+    body: JSON.stringify({ name }),
+  });
 export const deleteGroup = (id: number) =>
   api<void>(`/api/groups/${id}`, { method: "DELETE" });
 
 export const addBook = (input: Partial<ApiBook> & { title: string }) =>
   api<ApiBook>("/api/books", { method: "POST", body: JSON.stringify(input) });
 export const updateBook = (id: number, patch: Partial<ApiBook>) =>
-  api<ApiBook>(`/api/books/${id}`, { method: "PATCH", body: JSON.stringify(patch) });
+  api<ApiBook>(`/api/books/${id}`, {
+    method: "PATCH",
+    body: JSON.stringify(patch),
+  });
 export const deleteBook = (id: number) =>
   api<void>(`/api/books/${id}`, { method: "DELETE" });
 export const moveBook = (id: number, groupId: number | null) =>
-  api<void>(`/api/books/${id}/move`, { method: "POST", body: JSON.stringify({ group_id: groupId }) });
+  api<void>(`/api/books/${id}/move`, {
+    method: "POST",
+    body: JSON.stringify({ group_id: groupId }),
+  });
 ```
 
 Verification:
@@ -1487,7 +1517,9 @@ export default function LoginPage() {
 
   return (
     <main className="mx-auto flex min-h-screen max-w-md flex-col justify-center gap-4 px-6">
-      <h1 className="text-2xl">{mode === "login" ? "Welcome back" : "Create your library"}</h1>
+      <h1 className="text-2xl">
+        {mode === "login" ? "Welcome back" : "Create your library"}
+      </h1>
       <form onSubmit={submit} className="flex flex-col gap-3">
         <input
           type="email"
@@ -1519,7 +1551,9 @@ export default function LoginPage() {
         onClick={() => setMode(mode === "login" ? "register" : "login")}
         className="text-sm text-[var(--muted-foreground)] underline"
       >
-        {mode === "login" ? "No account yet? Sign up" : "Have an account? Log in"}
+        {mode === "login"
+          ? "No account yet? Sign up"
+          : "Have an account? Log in"}
       </button>
     </main>
   );
