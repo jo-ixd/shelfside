@@ -47,7 +47,6 @@ export function AddView() {
   const { state, update } = useLibrary();
 
   const ctx = params.get("ctx") === "wishlist" ? "wishlist" : "library";
-  const mode = params.get("mode") === "scan" || params.get("mode") === "link" ? (params.get("mode") as "scan" | "link") : "manual";
   const wish = ctx === "wishlist";
 
   const [title, setTitle] = useState("");
@@ -57,7 +56,7 @@ export function AddView() {
   const [colValue, setColValue] = useState<string>("");
   const [coverData, setCoverData] = useState<string | null>(null);
   const [matched, setMatched] = useState<string | null>(null);
-  const [cam, setCam] = useState(mode === "scan");
+  const [camMode, setCamMode] = useState<null | "scan" | "ai">(null);
   const [chooser, setChooser] = useState(false);
   const [fetching, setFetching] = useState(false);
   const [url, setUrl] = useState("");
@@ -149,7 +148,7 @@ export function AddView() {
   return (
     <main>
       <PageHeader
-        title={mode === "scan" ? "Scan ISBN" : mode === "link" ? "Add from link" : "Add manually"}
+        title="Add a book"
         sub={wish ? "to your wishlist" : "to your library"}
         back={back}
       />
@@ -186,7 +185,7 @@ export function AddView() {
             )}
           </button>
           <div className="min-w-0 flex-1 pt-1">
-            {mode === "link" ? (
+            {wish ? (
               <div className="mb-2">
                 <Label className="text-sm text-muted-foreground">
                   Product page link
@@ -205,12 +204,25 @@ export function AddView() {
                 </div>
               </div>
             ) : null}
-            <Label
-              htmlFor="f-title"
-              className="text-sm text-muted-foreground"
-            >
-              Title
-            </Label>
+            <div className="flex items-center justify-between">
+              <Label
+                htmlFor="f-title"
+                className="text-sm text-muted-foreground"
+              >
+                Title
+              </Label>
+              <button
+                type="button"
+                onClick={() => {
+                  buzz(10);
+                  setCamMode("scan");
+                }}
+                className="flex items-center gap-1 text-sm text-primary"
+              >
+                <CameraIcon className="size-4" />
+                Scan ISBN
+              </button>
+            </div>
             <Input
               id="f-title"
               value={title}
@@ -324,7 +336,7 @@ export function AddView() {
               type="button"
               onClick={() => {
                 setChooser(false);
-                setTimeout(() => setCam(true), 60);
+                setTimeout(() => setCamMode("ai"), 60);
               }}
               className="flex w-full items-center gap-3 rounded-xl border border-border bg-secondary px-3.5 py-3.5 text-left text-sm"
             >
@@ -340,17 +352,17 @@ export function AddView() {
         </DrawerContent>
       </Drawer>
 
-      {cam ? (
+      {camMode ? (
         <CameraOverlay
           open
-          mode={mode === "scan" ? "scan" : "ai"}
-          onCancel={() => setCam(false)}
+          mode={camMode}
+          onCancel={() => setCamMode(null)}
           onScan={() => {
-            setCam(false);
+            setCamMode(null);
             prefill(nextMatch(), "ISBN matched — details fetched from lookup");
           }}
           onShot={() => {
-            setCam(false);
+            setCamMode(null);
             setCoverData(
               makeCover(title.trim() || "Untitled", author.trim(), genre)
             );
