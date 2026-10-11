@@ -26,11 +26,6 @@ Never merge a pull request — not even your own, not even when CI is green. The
 
 Labels: when opening a PR or issue, tag it only with labels that already exist in the repo (`gh label list`). Never invent, create, or rename labels — if nothing fits, leave it unlabelled.
 
-- **Every PR gets a size label** (`size-s`, `size-m`, `size-l`, `size-xl`), always — never open one without it. Size is counted in authored lines of code; generated files (`Cargo.lock`, `package-lock.json`, typegen output, `.next` build artifacts) don't count toward it.
-- **`size-l` and `size-xl` PRs also get the `needs review` label** (human line-by-line review required), on top of `ai review`.
-- **Every PR also gets `ai review`** — per the label's description, all PRs need an AI pass before human review.
-- Add `enhancement`/`bug`/`documentation`/`UI` where they fit; multiple labels are fine.
-
 Reviewing: when asked to review a PR, follow the same workflow every time — fetch the diff with `gh pr diff`, read the full changed files (not just the hunks), check the labels against the policy above, verify the conventions in this file, then post findings with `gh pr review` (inline line comments where possible) ending with a clear verdict: approve, request changes, or comment.
 
 ## Conventions
