@@ -28,6 +28,9 @@ Labels: when opening a PR or issue, tag it only with labels that already exist i
 
 Reviewing: when asked to review a PR, follow the same workflow every time — fetch the diff with `gh pr diff`, read the full changed files (not just the hunks), check the labels against the policy above, verify the conventions in this file, then post findings with `gh pr review` (inline line comments where possible) ending with a clear verdict: approve, request changes, or comment. If you're reviewing code, leave your comments on the PR itself so they're visible in one place — not in chat.
 
+Sign-off: always end every PR comment, review, or issue post with a signature line so Jake can tell at a glance it came from an AI — replace MODEL below with your actual model name:
+🐉 Replying as MODEL on behalf of Jake
+
 ## Conventions
 
 - Styling is Tailwind v4 utility classes only. Inline `style={{...}}` is allowed only for genuinely runtime-dynamic values (per-book colours, drag position, progress width). Never hardcode hex constants in TS files — use Tailwind classes or shadcn theme tokens (`bg-primary`, `text-muted-foreground`, …).
