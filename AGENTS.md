@@ -13,12 +13,12 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 Run from the repo root. `npm install` first if `node_modules/` is missing. If `tsc` reports `LayoutProps` or other route types as missing, run `npx next typegen` — they are generated, not checked in.
 
 - `npm run dev` — dev server on http://localhost:3000
-- `npm run lint` — ESLint (flat config, `eslint-config-next`). Must be clean before every commit.
+- `npm run lint` — ESLint (flat config, `eslint-config-next`).
 - `npm run format` — Prettier over the whole repo; `npm run format:check` verifies without writing.
 - `npm run test` — Vitest, single run; `npm run test:watch` for watch mode. Unit tests live next to the module they cover (`src/lib/*.test.ts`).
 - `npm run build` — production build; run after any structural change (new/deleted routes or files).
 
-Expected green before pushing: `npm run lint && npm run format:check && npm run test && npm run build`.
+Every commit runs `lint && format:check && test` via a husky pre-commit hook — just commit, and fix anything the hook flags when it fires.
 
 ## PRs
 
@@ -26,7 +26,10 @@ Never merge a pull request — not even your own, not even when CI is green. The
 
 Labels: when opening a PR or issue, tag it only with labels that already exist in the repo (`gh label list`). Never invent, create, or rename labels — if nothing fits, leave it unlabelled.
 
-Reviewing: when asked to review a PR, follow the same workflow every time — fetch the diff with `gh pr diff`, read the full changed files (not just the hunks), check the labels against the policy above, verify the conventions in this file, then post findings with `gh pr review` (inline line comments where possible) ending with a clear verdict: approve, request changes, or comment.
+Reviewing: when asked to review a PR, follow the same workflow every time — fetch the diff with `gh pr diff`, read the full changed files (not just the hunks), check the labels against the policy above, verify the conventions in this file, then post findings with `gh pr review` (inline line comments where possible) ending with a clear verdict: approve, request changes, or comment. If you're reviewing code, leave your comments on the PR itself so they're visible in one place — not in chat.
+
+Sign-off: always end every PR comment, review, or issue post with a signature line so jo-ixd can tell at a glance it came from an AI — replace MODEL below with your actual model name:
+🐉 Replying as MODEL on behalf of jo-ixd
 
 ## Conventions
 
