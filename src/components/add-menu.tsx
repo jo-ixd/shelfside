@@ -46,12 +46,12 @@ export function AddMenu({
           <button
             type="button"
             onClick={() => go(`/add?ctx=${ctx}`)}
-            className="flex w-full items-center gap-3 rounded-xl border border-border bg-secondary px-3.5 py-3.5 text-left text-sm text-foreground"
+            className="flex w-full items-center gap-3 rounded-xl border border-border bg-secondary px-3.5 py-3.5 text-left text-base text-foreground"
           >
             <BookOpenIcon className="size-6 shrink-0 text-primary" />
             <span>
               Add a book
-              <small className="block text-sm text-muted-foreground">
+              <small className="block text-base text-muted-foreground">
                 Type the details or scan the ISBN
               </small>
             </span>
@@ -59,12 +59,12 @@ export function AddMenu({
           <button
             type="button"
             onClick={() => go(`/collections/new?ctx=${ctx}`)}
-            className="flex w-full items-center gap-3 rounded-xl border border-border bg-secondary px-3.5 py-3.5 text-left text-sm text-foreground"
+            className="flex w-full items-center gap-3 rounded-xl border border-border bg-secondary px-3.5 py-3.5 text-left text-base text-foreground"
           >
             <PlusIcon className="size-6 shrink-0 text-primary" />
             <span>
               New {noun}
-              <small className="block text-sm text-muted-foreground">
+              <small className="block text-base text-muted-foreground">
                 Group books into a new {noun}
               </small>
             </span>

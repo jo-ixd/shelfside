@@ -29,7 +29,7 @@ export function PageHeader({
         <div>
           <h1 className="font-serif text-2xl leading-tight">{title}</h1>
           {sub ? (
-            <p className="mt-0.5 text-sm text-muted-foreground">{sub}</p>
+            <p className="mt-0.5 text-base text-muted-foreground">{sub}</p>
           ) : null}
         </div>
       </div>

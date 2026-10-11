@@ -155,7 +155,7 @@ export function AddView() {
       <div className="px-4 pt-3">
         {matched ? (
           <p
-            className="mb-2 flex items-center gap-2 rounded-lg px-3 py-2 text-sm"
+            className="mb-2 flex items-center gap-2 rounded-lg px-3 py-2 text-base"
             style={{ background: MATCHED.bg, border: `1px solid ${MATCHED.border}`, color: MATCHED.text }}
           >
             <CheckCircleIcon className="size-4 shrink-0" />
@@ -187,7 +187,7 @@ export function AddView() {
           <div className="min-w-0 flex-1 pt-1">
             {wish ? (
               <div className="mb-2">
-                <Label className="text-sm text-muted-foreground">
+                <Label className="text-base text-muted-foreground">
                   Product page link
                 </Label>
                 <div className="mt-1 flex gap-2">
@@ -207,7 +207,7 @@ export function AddView() {
             <div className="flex items-center justify-between">
               <Label
                 htmlFor="f-title"
-                className="text-sm text-muted-foreground"
+                className="text-base text-muted-foreground"
               >
                 Title
               </Label>
@@ -217,7 +217,7 @@ export function AddView() {
                   buzz(10);
                   setCamMode("scan");
                 }}
-                className="flex items-center gap-1 text-sm text-primary"
+                className="flex items-center gap-1 text-base text-primary"
               >
                 <CameraIcon className="size-4" />
                 Scan ISBN
@@ -234,7 +234,7 @@ export function AddView() {
             />
             <Label
               htmlFor="f-author"
-              className="mt-2.5 text-sm text-muted-foreground"
+              className="mt-2.5 text-base text-muted-foreground"
             >
               Author
             </Label>
@@ -251,7 +251,7 @@ export function AddView() {
 
         <div className="mt-1 flex gap-2.5">
           <div className="flex-1">
-            <Label className="text-sm text-muted-foreground">
+            <Label className="text-base text-muted-foreground">
               Collection
             </Label>
             <Select
@@ -273,7 +273,7 @@ export function AddView() {
           <div className="flex-1">
             <Label
               htmlFor="f-shelf"
-              className="text-sm text-muted-foreground"
+              className="text-base text-muted-foreground"
             >
               Shelf
             </Label>
@@ -287,7 +287,7 @@ export function AddView() {
           </div>
         </div>
 
-        <Label className="mt-2.5 text-sm text-muted-foreground">
+        <Label className="mt-2.5 text-base text-muted-foreground">
           Genre
         </Label>
         <Select value={genre} onValueChange={(v) => setGenre(v as string)}>
@@ -322,12 +322,12 @@ export function AddView() {
                 setChooser(false);
                 setTimeout(() => fileRef.current?.click(), 60);
               }}
-              className="flex w-full items-center gap-3 rounded-xl border border-border bg-secondary px-3.5 py-3.5 text-left text-sm"
+              className="flex w-full items-center gap-3 rounded-xl border border-border bg-secondary px-3.5 py-3.5 text-left text-base"
             >
               <PhotoIcon className="size-6 shrink-0 text-primary" />
               <span>
                 Upload photo
-                <small className="block text-sm text-muted-foreground">
+                <small className="block text-base text-muted-foreground">
                   Your own picture for odd editions
                 </small>
               </span>
@@ -338,12 +338,12 @@ export function AddView() {
                 setChooser(false);
                 setTimeout(() => setCamMode("ai"), 60);
               }}
-              className="flex w-full items-center gap-3 rounded-xl border border-border bg-secondary px-3.5 py-3.5 text-left text-sm"
+              className="flex w-full items-center gap-3 rounded-xl border border-border bg-secondary px-3.5 py-3.5 text-left text-base"
             >
               <SparklesIcon className="size-6 shrink-0 text-primary" />
               <span>
                 Generate with AI
-                <small className="block text-sm text-muted-foreground">
+                <small className="block text-base text-muted-foreground">
                   Snap the real cover, let AI flatten it
                 </small>
               </span>

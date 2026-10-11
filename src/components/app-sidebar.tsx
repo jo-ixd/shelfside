@@ -56,7 +56,7 @@ export function AppSidebar() {
                 key={tab.href}
                 href={tab.href}
                 aria-current={on ? "page" : undefined}
-                className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm ${
+                className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-base ${
                   on
                     ? "bg-secondary text-primary"
                     : "text-muted-foreground hover:text-foreground"
