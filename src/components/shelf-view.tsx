@@ -2,16 +2,12 @@
 
 import { useSearchParams } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
-import { ArrowRightIcon } from "@heroicons/react/24/solid";
 import { BookDetailSheet } from "@/components/book-detail-sheet";
 import { PageHeader } from "@/components/page-header";
+import { BookTile, Cover } from "@/components/book-tile";
 import { Input } from "@/components/ui/input";
 import {
   bookWidth,
-  colourOf,
-  READING_COLOR,
-  SHELF,
-  WISH_COLOR,
   type Book,
 } from "@/lib/library";
 import { buzz, useLibrary } from "@/lib/store";
@@ -269,36 +265,35 @@ export function ShelfView() {
               items.push(
                 <div
                   key="gap"
-                  className="pointer-events-none h-[140px] shrink-0 rounded-[2px_4px_4px_2px] border-2 border-dashed border-primary/70 bg-primary/10"
-                  style={{ width: drag?.w ?? 40 }}
+                  className="pointer-events-none h-[156px] w-[104px] shrink-0 rounded-md border-2 border-dashed border-primary/70 bg-primary/10"
                 />
               );
               gapShown = true;
             }
             if (drag && b.id === drag.id) return;
             items.push(
-              <BookSpine
-                key={b.id}
-                b={b}
-                match={matches(b)}
-                grabbed={grabbedId === b.id}
-                onPointerDown={onPointerDown}
-                onOpen={setDetailId}
-              />
+              <div key={b.id} data-book className="shrink-0">
+                <BookTile
+                  b={b}
+                  onOpen={setDetailId}
+                  onPointerDown={onPointerDown}
+                  dimmed={!matches(b)}
+                  grabbed={grabbedId === b.id}
+                />
+              </div>
             );
           });
           if (draggingHere && !gapShown) {
             items.push(
               <div
                 key="gap"
-                className="pointer-events-none h-[140px] shrink-0 rounded-[2px_4px_4px_2px] border-2 border-dashed border-primary/70 bg-primary/10"
-                style={{ width: drag?.w ?? 40 }}
+                className="pointer-events-none h-[156px] w-[104px] shrink-0 rounded-md border-2 border-dashed border-primary/70 bg-primary/10"
               />
             );
           }
           return (
-            <div key={shelf} className="mb-0 mt-3.5">
-              <p className="mb-1.5 ml-1 flex justify-between text-sm text-muted-foreground">
+            <div key={shelf} className="mb-4 mt-3.5">
+              <p className="mb-1.5 ml-1 flex justify-between text-base text-muted-foreground">
                 <span>{shelf}</span>
                 <span className="text-muted-foreground/60">
                   {matchingCount}
@@ -307,13 +302,7 @@ export function ShelfView() {
               </p>
               <div
                 data-shelf={shelf}
-                className="flex items-end overflow-x-auto rounded-md px-2 pt-2.5 [scrollbar-width:none]"
-                style={{
-                  background: SHELF.gradient,
-                  border: `2px solid ${SHELF.border}`,
-                  borderBottom: `8px solid ${SHELF.lip}`,
-                  minHeight: list.length ? 150 : 60,
-                }}
+                className="flex items-start gap-6 overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
               >
                 {items}
               </div>
@@ -324,86 +313,20 @@ export function ShelfView() {
 
       {drag && dragBook ? (
         <div
-          className="pointer-events-none fixed z-50 flex items-center justify-center rounded-[2px_4px_4px_2px] shadow-[0_8px_24px_rgba(0,0,0,0.6)]"
+          className="pointer-events-none fixed z-50"
           style={{
             left: drag.x - drag.w / 2,
             top: drag.y - drag.h / 2,
             width: drag.w,
             height: drag.h,
-            background: colourOf(dragBook),
             transform: "rotate(4deg) scale(1.05)",
           }}
         >
-          {!dragBook.spine ? (
-            <span className="px-0.5 text-xs tracking-wider whitespace-nowrap text-white/90 [writing-mode:vertical-rl]">
-              {dragBook.t}
-            </span>
-          ) : null}
+          <Cover b={dragBook} />
         </div>
       ) : null}
 
       <BookDetailSheet bookId={detailId} onClose={() => setDetailId(null)} />
     </main>
-  );
-}
-
-function BookSpine({
-  b,
-  match,
-  grabbed,
-  onPointerDown,
-  onOpen,
-}: {
-  b: Book;
-  match: boolean;
-  grabbed: boolean;
-  onPointerDown: (e: React.PointerEvent, b: Book) => void;
-  onOpen: (id: string) => void;
-}) {
-  return (
-    <div
-      data-book
-      role="button"
-      tabIndex={0}
-      aria-label={b.t}
-      onPointerDown={(e) => onPointerDown(e, b)}
-      onKeyDown={(e) => {
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
-          onOpen(b.id);
-        }
-      }}
-      className={`relative flex h-[140px] shrink-0 cursor-pointer items-center justify-center rounded-[2px_4px_4px_2px] shadow-[inset_-3px_0_5px_rgba(0,0,0,0.4)] transition-transform [touch-action:pan-y] select-none hover:-translate-y-1.5 ${
-        grabbed ? "-translate-y-2.5 -rotate-2" : ""
-      } ${match ? "" : "opacity-10"}`}
-      style={{
-        width: (b.w || bookWidth(b.t)) + "px",
-        background: colourOf(b),
-        backgroundImage: b.spine ? `url(${b.spine})` : undefined,
-        backgroundSize: b.spine ? "cover" : undefined,
-        backgroundPosition: b.spine ? "center" : undefined,
-      }}
-    >
-      {!b.spine ? (
-        <span className="pointer-events-none max-h-[130px] overflow-hidden px-0.5 py-2 text-xs tracking-wider whitespace-nowrap text-white/90 [text-shadow:0_1px_2px_rgba(0,0,0,0.6)] [writing-mode:vertical-rl]">
-          {b.t}
-        </span>
-      ) : null}
-      {b.st === "Reading" ? (
-        <span
-          className="absolute bottom-1.5 left-1 right-1 h-[3px] rounded-sm"
-          style={{ background: READING_COLOR, opacity: 0.8 }}
-        />
-      ) : null}
-      {b.wish ? (
-        <span
-          className="absolute bottom-1.5 left-1 right-1 h-[3px] rounded-sm"
-          style={{ background: WISH_COLOR }}
-        />
-      ) : null}
-      {b.st.startsWith("Lent") ? (
-        <ArrowRightIcon className="absolute top-1 right-1 size-3 text-[#ffd76a]" />
-      ) : null}
-    </div>
   );
 }
