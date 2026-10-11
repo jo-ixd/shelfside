@@ -298,7 +298,7 @@ export function ShelfView() {
           }
           return (
             <div key={shelf} className="mb-0 mt-3.5">
-              <p className="mb-1.5 ml-1 flex justify-between text-sm text-muted-foreground">
+              <p className="mb-1.5 ml-1 flex justify-between text-base text-muted-foreground">
                 <span>{shelf}</span>
                 <span className="text-muted-foreground/60">
                   {matchingCount}

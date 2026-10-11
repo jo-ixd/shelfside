@@ -67,12 +67,12 @@ export function AddFab() {
                   buzz(10);
                   router.push(`/add?ctx=${ctx}&mode=${a.mode}`);
                 }}
-                className="flex w-full items-center gap-3 rounded-xl border border-border bg-secondary px-3.5 py-3.5 text-left text-sm text-foreground"
+                className="flex w-full items-center gap-3 rounded-xl border border-border bg-secondary px-3.5 py-3.5 text-left text-base text-foreground"
               >
                 <a.icon className="size-6 shrink-0 text-primary" />
                 <span>
                   {a.label}
-                  <small className="block text-sm text-muted-foreground">
+                  <small className="block text-base text-muted-foreground">
                     {a.sub}
                   </small>
                 </span>
@@ -85,12 +85,12 @@ export function AddFab() {
                 buzz(10);
                 router.push(`/collections/new?ctx=${ctx}`);
               }}
-              className="flex w-full items-center gap-3 rounded-xl border border-border bg-secondary px-3.5 py-3.5 text-left text-sm text-foreground"
+              className="flex w-full items-center gap-3 rounded-xl border border-border bg-secondary px-3.5 py-3.5 text-left text-base text-foreground"
             >
               <PlusIcon className="size-6 shrink-0 text-primary" />
               <span>
                 New {noun}
-                <small className="block text-sm text-muted-foreground">
+                <small className="block text-base text-muted-foreground">
                   Group books into a new {noun}
                 </small>
               </span>

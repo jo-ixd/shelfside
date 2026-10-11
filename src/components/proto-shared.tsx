@@ -31,7 +31,7 @@ export function Cover({
     >
       <div className="pointer-events-none absolute inset-[5px] rounded-[2px] border border-[#f4ead6]/25" />
       <div className="relative flex flex-col items-start gap-1">
-        <p className="font-serif text-sm leading-tight text-balance text-[#f4ead6]">
+        <p className="font-serif text-base leading-tight text-balance text-[#f4ead6]">
           {b.t}
         </p>
         {b.ed ? (
@@ -87,7 +87,7 @@ export function BookTile({
       )}
     >
       <Cover b={b} className="h-[156px] w-full" />
-      <span className="line-clamp-2 text-sm leading-snug text-foreground">
+      <span className="line-clamp-2 text-base leading-snug text-foreground">
         {b.t}
       </span>
       <span className="line-clamp-1 text-xs text-muted-foreground">{b.a}</span>

@@ -35,7 +35,7 @@ export function CollectionsGrid({ wish }: { wish: boolean }) {
               className="block rounded-2xl border border-border bg-card p-3 transition-colors active:border-primary"
             >
               <h3 className="font-serif text-lg">{c.name}</h3>
-              <span className="text-sm text-muted-foreground">
+              <span className="text-base text-muted-foreground">
                 {inCol.length} book{inCol.length === 1 ? "" : "s"} ·{" "}
                 {shelves.size} shelf{shelves.size === 1 ? "" : "ves"}
               </span>

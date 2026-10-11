@@ -55,7 +55,7 @@ export function LibraryHome() {
     <main>
       <header className="px-4 pt-5 pb-3">
         <h1 className="font-serif text-2xl">Your library</h1>
-        <p className="mt-0.5 text-sm text-muted-foreground">
+        <p className="mt-0.5 text-base text-muted-foreground">
           {totalBooks} book{totalBooks === 1 ? "" : "s"} across{" "}
           {cols.length} collection{cols.length === 1 ? "" : "s"}
         </p>
@@ -66,12 +66,12 @@ export function LibraryHome() {
           <section key={col.id} aria-label={col.name} className="mb-7">
             <div className="flex items-baseline gap-2 px-4">
               <ColTitle col={col} onRename={renameProtoCol} className="text-lg" />
-              <span className="shrink-0 text-sm text-muted-foreground">
+              <span className="shrink-0 text-base text-muted-foreground">
                 {flat.length} book{flat.length === 1 ? "" : "s"}
               </span>
               <Link
                 href={`/collection?col=${col.id}`}
-                className="ml-auto flex shrink-0 items-center gap-0.5 text-sm text-primary"
+                className="ml-auto flex shrink-0 items-center gap-0.5 text-base text-primary"
               >
                 View all
                 <ChevronRightIcon className="size-3.5" />

@@ -53,7 +53,7 @@ export function NewCollectionView() {
       >
         <Label
           htmlFor="new-col-name"
-          className="text-sm text-muted-foreground"
+          className="text-base text-muted-foreground"
         >
           Name
         </Label>

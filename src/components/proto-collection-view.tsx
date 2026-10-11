@@ -46,7 +46,7 @@ export function ProtoCollectionView() {
   if (!col) {
     return (
       <main className="px-4 pt-6">
-        <p className="text-sm text-muted-foreground">
+        <p className="text-base text-muted-foreground">
           That collection doesn&apos;t exist.
         </p>
         <Link href="/" className={cn(buttonVariants({ variant: "outline" }), "mt-3 w-fit")}>
@@ -74,7 +74,7 @@ export function ProtoCollectionView() {
         </Link>
         <ColTitle col={col} onRename={renameProtoCol} className="text-2xl" />
       </div>
-      <p className="px-4 pb-1 text-sm text-muted-foreground">
+      <p className="px-4 pb-1 text-base text-muted-foreground">
         {totalBooks} book{totalBooks === 1 ? "" : "s"} · {col.groups.length}{" "}
         group{col.groups.length === 1 ? "" : "s"} · auto-filed by series
       </p>
@@ -86,7 +86,7 @@ export function ProtoCollectionView() {
             <span className="text-xs text-muted-foreground/70">
               {g.auto ? "auto-sorted" : "custom"}
             </span>
-            <span className="ml-auto shrink-0 text-sm text-muted-foreground">
+            <span className="ml-auto shrink-0 text-base text-muted-foreground">
               {g.books.length} book{g.books.length === 1 ? "" : "s"}
             </span>
           </div>
