@@ -22,8 +22,18 @@ import { Button } from "@/components/ui/button";
 import { buzz } from "@/lib/store";
 
 const TABS = [
-  { href: "/", label: "Collections", icon: BuildingLibraryIcon, active: BuildingLibrarySolidIcon },
-  { href: "/wishlist", label: "Wishlist", icon: BookmarkIcon, active: BookmarkSolidIcon },
+  {
+    href: "/",
+    label: "Collections",
+    icon: BuildingLibraryIcon,
+    active: BuildingLibrarySolidIcon,
+  },
+  {
+    href: "/wishlist",
+    label: "Wishlist",
+    icon: BookmarkIcon,
+    active: BookmarkSolidIcon,
+  },
   { href: "/profile", label: "Profile", icon: UserIcon, active: UserSolidIcon },
 ];
 

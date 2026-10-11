@@ -40,7 +40,7 @@ export function BookTile({
       className={cn(
         "flex w-[104px] shrink-0 cursor-pointer flex-col items-start gap-1 text-left select-none [touch-action:pan-y] transition-transform hover:-translate-y-1.5",
         grabbed && "-translate-y-2.5",
-        dimmed && "opacity-10"
+        dimmed && "opacity-10",
       )}
     >
       <Cover b={b} />
@@ -69,7 +69,9 @@ export function Cover({ b }: { b: Book }) {
   return (
     <div
       className="relative flex h-[156px] w-full shrink-0 flex-col justify-between overflow-hidden rounded-md p-2 shadow-[inset_-3px_0_6px_rgba(0,0,0,0.4),0_3px_8px_rgba(0,0,0,0.4)] select-none"
-      style={{ background: `linear-gradient(160deg, ${colourOf(b)}, #1a130b 135%)` }}
+      style={{
+        background: `linear-gradient(160deg, ${colourOf(b)}, #1a130b 135%)`,
+      }}
     >
       <div className="pointer-events-none absolute inset-[5px] rounded-[2px] border border-[#f4ead6]/25" />
       <p className="relative font-serif text-base leading-tight text-balance text-[#f4ead6]">

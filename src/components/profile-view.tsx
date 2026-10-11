@@ -8,7 +8,12 @@ import { Input } from "@/components/ui/input";
 import { ACCENTS } from "@/lib/library";
 import { buzz, useLibrary } from "@/lib/store";
 
-const DUMMY_ROWS = ["Account", "Notifications", "Export data", "About Shelfside"];
+const DUMMY_ROWS = [
+  "Account",
+  "Notifications",
+  "Export data",
+  "About Shelfside",
+];
 const LABELS: Record<string, string> = { "About Shelfside": "About" };
 
 export function ProfileView() {
@@ -46,9 +51,7 @@ export function ProfileView() {
           {(name || "?").charAt(0).toUpperCase()}
         </div>
         <div className="min-w-0 pt-[18px]">
-          <p className="text-base text-muted-foreground">
-            Name
-          </p>
+          <p className="text-base text-muted-foreground">Name</p>
           <Input
             value={name}
             onChange={(e) => setNameInput(e.target.value)}
@@ -76,9 +79,7 @@ export function ProfileView() {
       </div>
 
       <section className="px-4 pt-4.5">
-        <h2 className="mb-2.5 text-base text-muted-foreground">
-          Theme
-        </h2>
+        <h2 className="mb-2.5 text-base text-muted-foreground">Theme</h2>
         <div className="flex gap-3">
           {Object.entries(ACCENTS).map(([name_, hex]) => (
             <button
@@ -99,9 +100,7 @@ export function ProfileView() {
       </section>
 
       <section className="px-4 pt-4.5">
-        <h2 className="mb-2.5 text-base text-muted-foreground">
-          Settings
-        </h2>
+        <h2 className="mb-2.5 text-base text-muted-foreground">Settings</h2>
         {DUMMY_ROWS.map((row) => (
           <button
             key={row}

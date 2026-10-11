@@ -14,8 +14,18 @@ import {
 } from "@heroicons/react/24/solid";
 
 const TABS = [
-  { href: "/", label: "Collections", icon: BuildingLibraryIcon, active: BuildingLibrarySolidIcon },
-  { href: "/wishlist", label: "Wishlist", icon: BookmarkIcon, active: BookmarkSolidIcon },
+  {
+    href: "/",
+    label: "Collections",
+    icon: BuildingLibraryIcon,
+    active: BuildingLibrarySolidIcon,
+  },
+  {
+    href: "/wishlist",
+    label: "Wishlist",
+    icon: BookmarkIcon,
+    active: BookmarkSolidIcon,
+  },
   { href: "/profile", label: "Profile", icon: UserIcon, active: UserSolidIcon },
 ];
 
