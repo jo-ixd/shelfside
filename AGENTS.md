@@ -1,3 +1,7 @@
+# Shelfside
+
+Manage your home library on the go. See what you read and own at a glance - organised the way you want.
+
 <!-- BEGIN:nextjs-agent-rules -->
 
 # This is NOT the Next.js you know
@@ -8,9 +12,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 <!-- END:nextjs-agent-rules -->
 
-## Commands
-
-Run from the repo root. `npm install` first if `node_modules/` is missing. If `tsc` reports `LayoutProps` or other route types as missing, run `npx next typegen` — they are generated, not checked in.
+## Useful Commands
 
 - `npm run dev` — dev server on http://localhost:3000
 - `npm run lint` — ESLint (flat config, `eslint-config-next`).
@@ -18,21 +20,26 @@ Run from the repo root. `npm install` first if `node_modules/` is missing. If `t
 - `npm run test` — Vitest, single run; `npm run test:watch` for watch mode. Unit tests live next to the module they cover (`src/lib/*.test.ts`).
 - `npm run build` — production build; run after any structural change (new/deleted routes or files).
 
-Every commit runs `lint && format:check && test` via a husky pre-commit hook — just commit, and fix anything the hook flags when it fires.
+## Code rules
+
+This is a typescript codebase, do the following:
+- never use `any` types
+- never use return types, rely on inference
+- avoid undefined
+- never use `as` casting
+
+Follow conventional commits and simple plain English messages describing what you did not how you did it, for example, `docs: changed AGENTS.md`. Make sure to commit often.
+
+When verifying code, never run a dev server rely on testing.
 
 ## PRs
 
-Never merge a pull request — not even your own, not even when CI is green. The user reviews and merges every PR themselves. Open the PR, link it in chat, and stop.
+Never merge a pull request, period.
 
-Labels: when opening a PR or issue, tag it only with labels that already exist in the repo (`gh label list`). Never invent, create, or rename labels — if nothing fits, leave it unlabelled.
+When opening a PR or issue, tag it with labels that already exist (`gh label list`). Never create labels. Every PR should get a `size` label that's appropriate for the change. 
 
-Reviewing: when asked to review a PR, follow the same workflow every time — fetch the diff with `gh pr diff`, read the full changed files (not just the hunks), check the labels against the policy above, verify the conventions in this file, then post findings with `gh pr review` (inline line comments where possible) ending with a clear verdict: approve, request changes, or comment. If you're reviewing code, leave your comments on the PR itself so they're visible in one place — not in chat.
+Use a plain English title to describe what you did, not how you did, follow the `PULL_REQUEST_TEMPLATE.md`. If the PR is tied to an issue use `ISSUE #X: ...` in the PR title as a prefix.
 
-Sign-off: always end every PR comment, review, or issue post with a signature line so jo-ixd can tell at a glance it came from an AI — replace MODEL below with your actual model name:
-🐉 Replying as MODEL on behalf of jo-ixd
+When reviewing a PR, diff with `gh pr diff`, read the full changed files (not just the chunks), then post findings with `gh pr review`. Try to determine whether the PR is mergeable or not, if the code changes are too large and risky to merge, tag the PR with `review required`.
 
-## Conventions
-
-- Styling is Tailwind v4 utility classes only. Inline `style={{...}}` is allowed only for genuinely runtime-dynamic values (per-book colours, drag position, progress width). Never hardcode hex constants in TS files — use Tailwind classes or shadcn theme tokens (`bg-primary`, `text-muted-foreground`, …).
-- shadcn components live in `src/components/ui/` and are added with the `shadcn` CLI only when actually needed — don't scaffold unused ones.
-- No parallel data stores: `src/lib/store.tsx` is the single app store; data-model helpers live in `src/lib/library.ts`.
+Always end every comment with a signature line so it's clear a comment was made by AI, for example, `Replying as {MODEL_NAME} on behalf of {GITHUB_USERNAME}`
