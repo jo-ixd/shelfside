@@ -1,0 +1,71 @@
+name: Label PR
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  label:
+    name: apply size labels
+    runs-on: ubuntu-latest
+    steps:
+      - name: Apply size labels
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_HEAD: ${{ github.event.pull_request.head.repo.full_name }}
+        run: |
+          set -euo pipefail
+
+          # fork pull requests run with a read-only token, skip those
+          if [ "$PR_HEAD" != "$REPO" ]; then
+            echo "Pull request is from a fork, skipping labels"
+            exit 0
+          fi
+
+          additions=$(gh api "repos/$REPO/pulls/$PR_NUMBER" --jq '.additions')
+          deletions=$(gh api "repos/$REPO/pulls/$PR_NUMBER" --jq '.deletions')
+          total=$((additions + deletions))
+
+          if [ "$total" -lt 100 ]; then
+            size=size-s
+          elif [ "$total" -lt 500 ]; then
+            size=size-m
+          elif [ "$total" -lt 1000 ]; then
+            size=size-l
+          else
+            size=size-xl
+          fi
+
+          echo "$total changed lines, applying $size"
+
+          existing=$(gh api "repos/$REPO/issues/$PR_NUMBER/labels" --jq '.[].name')
+
+          # swap a stale size label if the pull request grew or shrank
+          for label in size-s size-m size-l size-xl; do
+            if [ "$label" != "$size" ] && grep -qx "$label" <<< "$existing"; then
+              gh api -X DELETE "repos/$REPO/issues/$PR_NUMBER/labels/$label" > /dev/null
+            fi
+          done
+          if ! grep -qx "$size" <<< "$existing"; then
+            gh api -X POST "repos/$REPO/issues/$PR_NUMBER/labels" -f "labels[]=$size" > /dev/null
+          fi
+
+          # size-m and above require a human review, size-s does not
+          case "$size" in
+            size-m | size-l | size-xl)
+              if ! grep -qx "needs review" <<< "$existing"; then
+                gh api -X POST "repos/$REPO/issues/$PR_NUMBER/labels" -f "labels[]=needs review" > /dev/null
+              fi
+              ;;
+            size-s)
+              if grep -qx "needs review" <<< "$existing"; then
+                gh api -X DELETE "repos/$REPO/issues/$PR_NUMBER/labels/needs%20review" > /dev/null
+              fi
+              ;;
+          esac
