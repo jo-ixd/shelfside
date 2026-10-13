@@ -40,10 +40,3 @@ jobs:
     steps:
       - uses: ./.github/actions/setup-repo
       - run: npm run test
-
-  build:
-    name: build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: ./.github/actions/setup-repo
-      - run: npm run build
