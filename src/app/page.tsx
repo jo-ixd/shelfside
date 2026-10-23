@@ -1,9 +1,10 @@
-import { CollectionsGrid } from "@/components/collections-grid";
+import { Suspense } from "react";
+import { HomeView } from "@/components/home-view";
 
 export default function Home() {
   return (
-    <main>
-      <CollectionsGrid wish={false} />
-    </main>
+    <Suspense fallback={null}>
+      <HomeView />
+    </Suspense>
   );
 }
