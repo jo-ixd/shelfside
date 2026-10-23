@@ -41,7 +41,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             <AccentSync />
             {/* Sidebar owns desktop navigation; content uses the full width
                 to its right instead of a narrow centred column. */}
-            <div className="md:pl-60">{children}</div>
+            <div className="md:pl-[280px]">{children}</div>
             <AppSidebar />
             <BottomNav />
             <AddFab />
