@@ -46,7 +46,7 @@ export default function RedesignsPage() {
               Option 2 — Ledger
             </h2>
             <p className="mt-1 max-w-[70ch] text-sm text-muted-foreground">
-              A librarian's register: one dense, typographic list of every
+              A librarian&rsquo;s register: one dense, typographic list of every
               book, filtered by collection through large sticky tabs. The
               entire library fits in about one screen of scroll; status gets
               a real badge column instead of a micro-pill.
