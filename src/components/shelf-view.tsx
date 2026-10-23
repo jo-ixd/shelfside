@@ -27,7 +27,6 @@ type Gesture = {
 export function ShelfView() {
   const params = useSearchParams();
   const col = params.get("col") ?? "";
-  const wish = params.get("wish") === "1";
   const { state, update } = useLibrary();
 
   const [searchQ, setSearchQ] = useState("");
@@ -46,9 +45,7 @@ export function ShelfView() {
   const dropRef = useRef<DropTarget | null>(null);
 
   const q = searchQ.trim().toLowerCase();
-  const all = state
-    ? state.books.filter((b) => b.wish === wish && b.col === col)
-    : [];
+  const all = state ? state.books.filter((b) => b.col === col) : [];
 
   /* Stop page scroll mid-gesture, like the prototype's touchmove guard. */
   useEffect(() => {
@@ -111,7 +108,7 @@ export function ShelfView() {
         if (!b.w) b.w = bookWidth(b.t);
         b._new = true;
         const list = d.books.filter(
-          (x) => x.wish === wish && x.col === col && x.shelf === target.shelf,
+          (x) => x.col === col && x.shelf === target.shelf,
         );
         if (target.idx < 0 || target.idx >= list.length) {
           d.books.push(b);
@@ -238,14 +235,13 @@ export function ShelfView() {
 
   const sub =
     (q ? `${matching} matching · ` : "") +
-    `${all.length} book${all.length === 1 ? "" : "s"} · ${byShelf.size} shelf${byShelf.size === 1 ? "" : "ves"}` +
-    (wish ? " · wishlist" : "");
+    `${all.length} book${all.length === 1 ? "" : "s"} · ${byShelf.size} shelf${byShelf.size === 1 ? "" : "ves"}`;
 
   const dragBook = drag ? state.books.find((b) => b.id === drag.id) : undefined;
 
   return (
     <main>
-      <PageHeader title={col} sub={sub} back={wish ? "/wishlist" : "/"} />
+      <PageHeader title={col} sub={sub} back="/" />
       <div className="px-4 pt-2.5">
         <Input
           type="search"

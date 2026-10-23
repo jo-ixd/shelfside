@@ -11,7 +11,6 @@ export type Book = {
   col: string;
   shelf: string;
   st: string;
-  wish: boolean;
   prog?: number;
   c?: string;
   w?: number;
@@ -21,7 +20,7 @@ export type Book = {
   _new?: boolean;
 };
 
-export type Collection = { name: string; wish: boolean };
+export type Collection = { name: string };
 
 export type Profile = { name: string; accent: string };
 
@@ -46,7 +45,6 @@ export const GENRE_COLORS: Record<string, string> = {
 };
 
 export const STATUSES = ["Read", "Reading", "To Read", "Reference", "Lent out"];
-export const WISH_STATUSES = ["Wish", "Ordered"];
 
 /* Shelf graphics & status colors, carried over from the prototype. */
 export const SHELF = {
@@ -56,7 +54,6 @@ export const SHELF = {
   lip: "#6b5433",
 };
 export const READING_COLOR = "#ffd76a";
-export const WISH_COLOR = "#d4a0d8";
 
 export const ACCENTS: Record<string, string> = {
   Amber: "#c9a86a",
@@ -74,21 +71,6 @@ export const SCAN_MATCHES = [
     g: "Fiction",
   },
 ];
-
-export const LINK_MATCHES: Record<string, { t: string; a: string; g: string }> =
-  {
-    amazon: { t: "Klara and the Sun", a: "Kazuo Ishiguro", g: "Fiction" },
-    waterstones: {
-      t: "Tomorrow, and Tomorrow, and Tomorrow",
-      a: "Gabrielle Zevin",
-      g: "Fiction",
-    },
-    bookdepository: {
-      t: "The Priory of the Orange Tree",
-      a: "Samantha Shannon",
-      g: "Fantasy",
-    },
-  };
 
 type SeedBook = {
   t: string;
@@ -310,49 +292,12 @@ const SEED_LIB: SeedBook[] = [
   },
 ];
 
-const SEED_WISH: SeedBook[] = [
-  {
-    t: "Babel",
-    a: "R. F. Kuang",
-    g: "Fantasy",
-    col: "To Buy",
-    shelf: "Shelf A",
-    st: "Wish",
-  },
-  {
-    t: "Hyperion",
-    a: "Dan Simmons",
-    g: "Sci-Fi",
-    col: "To Buy",
-    shelf: "Shelf A",
-    st: "Wish",
-  },
-  {
-    t: "The Secret History",
-    a: "Donna Tartt",
-    g: "Fiction",
-    col: "To Buy",
-    shelf: "Shelf A",
-    st: "Ordered",
-  },
-];
-
 export function freshState(): AppState {
   const books: Book[] = [];
-  SEED_LIB.forEach((b, i) =>
-    books.push({ ...b, id: "l" + i, wish: false } as Book),
-  );
-  SEED_WISH.forEach((b, i) =>
-    books.push({ ...b, id: "w" + i, wish: true } as Book),
-  );
+  SEED_LIB.forEach((b, i) => books.push({ ...b, id: "l" + i }));
   return {
     books,
-    cols: [
-      { name: "Living Room", wish: false },
-      { name: "Office", wish: false },
-      { name: "Bedroom", wish: false },
-      { name: "To Buy", wish: true },
-    ],
+    cols: [{ name: "Living Room" }, { name: "Office" }, { name: "Bedroom" }],
     profile: { name: "Jake", accent: "Amber" },
   };
 }
@@ -362,6 +307,8 @@ export function loadState(): AppState {
     const raw =
       typeof window !== "undefined" ? localStorage.getItem(STORAGE_KEY) : null;
     const parsed = raw ? (JSON.parse(raw) as AppState) : null;
+    /* Storage written by older versions carries extra wishlist fields on
+       books and collections; they load fine and are simply left in place. */
     const okBooks =
       !!parsed &&
       Array.isArray(parsed.books) &&
@@ -373,8 +320,7 @@ export function loadState(): AppState {
           typeof (b as Book).t === "string" &&
           typeof (b as Book).col === "string" &&
           typeof (b as Book).shelf === "string" &&
-          typeof (b as Book).st === "string" &&
-          typeof (b as Book).wish === "boolean",
+          typeof (b as Book).st === "string",
       );
     const okCols =
       !!parsed &&
@@ -383,8 +329,7 @@ export function loadState(): AppState {
         (c) =>
           c &&
           typeof c === "object" &&
-          typeof (c as Collection).name === "string" &&
-          typeof (c as Collection).wish === "boolean",
+          typeof (c as Collection).name === "string",
       );
     if (
       parsed &&
@@ -422,10 +367,6 @@ export function bookWidth(t: string): number {
 
 export function statusLabel(b: Book): string {
   return b.st.startsWith("Lent") ? "Lent out" : b.st;
-}
-
-export function statusList(b: Book): string[] {
-  return b.wish ? WISH_STATUSES : STATUSES;
 }
 
 /* Generated cover art, same look as the prototype's canvas cover. */

@@ -85,14 +85,6 @@ export function Cover({ b }: { b: Book }) {
 }
 
 export function StatusPill({ b }: { b: Book }) {
-  if (b.wish) {
-    return (
-      <Badge variant="outline" className="h-4.5 px-1.5 text-[10px]">
-        <i className="size-1.5 rounded-full bg-[#d4a0d8]" aria-hidden />
-        Wishlist
-      </Badge>
-    );
-  }
   if (b.st === "Read") {
     return <Badge className="h-4.5 px-1.5 text-[10px]">Read</Badge>;
   }

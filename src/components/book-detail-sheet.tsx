@@ -6,8 +6,8 @@ import { Drawer, DrawerContent, DrawerTitle } from "@/components/ui/drawer";
 import {
   colourOf,
   READING_COLOR,
+  STATUSES,
   statusLabel,
-  statusList,
   type Book,
 } from "@/lib/library";
 import { buzz, useLibrary } from "@/lib/store";
@@ -33,8 +33,8 @@ export function BookDetailSheet({
   if (!state) return null;
 
   function cycleStatus(b: Book) {
-    const list = statusList(b);
-    const label = b.wish ? b.st : statusLabel(b);
+    const list = STATUSES;
+    const label = statusLabel(b);
     const i = list.indexOf(label);
     update((d) => {
       const nb = d.books.find((x) => x.id === b.id);
@@ -188,9 +188,7 @@ export function BookDetailSheet({
         >
           {armed
             ? `Tap again to remove \u201C${book.t}\u201D`
-            : book.wish
-              ? "Remove from wishlist"
-              : "Remove from library"}
+            : "Remove from library"}
         </button>
         <input
           ref={fileRef}

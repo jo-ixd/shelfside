@@ -8,7 +8,6 @@ import {
   loadState,
   saveState,
   statusLabel,
-  statusList,
   STORAGE_KEY,
   type Book,
   type AppState,
@@ -23,7 +22,6 @@ function makeBook(overrides: Partial<Book> = {}): Book {
     col: "Living Room",
     shelf: "Shelf A",
     st: "To Read",
-    wish: false,
     ...overrides,
   };
 }
@@ -75,27 +73,10 @@ describe("statusLabel", () => {
   });
 });
 
-describe("statusList", () => {
-  it("returns wishlist statuses for wishlist books", () => {
-    expect(statusList(makeBook({ wish: true }))).toEqual(["Wish", "Ordered"]);
-  });
-
-  it("returns shelf statuses for library books", () => {
-    expect(statusList(makeBook({ wish: false }))).toEqual([
-      "Read",
-      "Reading",
-      "To Read",
-      "Reference",
-      "Lent out",
-    ]);
-  });
-});
-
 describe("freshState", () => {
-  it("returns the seeded library, wishlist and profile", () => {
+  it("returns the seeded library and profile", () => {
     const state = freshState();
     expect(state.books.length).toBeGreaterThan(0);
-    expect(state.books.some((b) => b.wish)).toBe(true);
     expect(state.cols.length).toBeGreaterThan(0);
     expect(state.profile).toEqual({ name: "Jake", accent: "Amber" });
   });
@@ -127,8 +108,31 @@ describe("saveState / loadState", () => {
 
   it("falls back to a fresh state when a book fails validation", () => {
     const bad = freshState();
-    (bad.books[0] as Partial<Book>).wish = "yes" as unknown as boolean;
+    (bad.books[0] as Partial<Book>).t = 42 as unknown as string;
     backing.set(STORAGE_KEY, JSON.stringify(bad));
     expect(loadState()).toEqual(freshState());
+  });
+
+  it("loads storage written by an older version with wishlist fields", () => {
+    const old = {
+      books: [
+        {
+          id: "w0",
+          t: "Babel",
+          a: "R. F. Kuang",
+          g: "Fantasy",
+          col: "To Buy",
+          shelf: "Shelf A",
+          st: "Wish",
+          wish: true,
+        },
+      ],
+      cols: [{ name: "To Buy", wish: true }],
+      profile: { name: "Jake", accent: "Amber" },
+    };
+    backing.set(STORAGE_KEY, JSON.stringify(old));
+    const loaded = loadState();
+    expect(loaded.books[0].t).toBe("Babel");
+    expect(loaded.cols[0].name).toBe("To Buy");
   });
 });
