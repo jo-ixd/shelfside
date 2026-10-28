@@ -11,8 +11,8 @@ import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import {
+  ChevronDownIcon,
   ChevronRightIcon,
-  ChevronUpIcon,
   PlusIcon,
 } from "@heroicons/react/24/outline";
 import { cn } from "cn";
@@ -182,7 +182,7 @@ function Sidebar() {
             <span className="min-w-0 flex-1 truncate text-sm font-medium">
               {name}
             </span>
-            <ChevronUpIcon
+            <ChevronDownIcon
               aria-hidden
               className={cn(
                 "size-4 shrink-0 text-muted-foreground transition-transform motion-safe:duration-200",

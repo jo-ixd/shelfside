@@ -105,18 +105,11 @@ export function HomeView() {
     : inCol;
 
   const bookCell = (b: Book) => (
-    <div
+    <button
       key={b.id}
-      role="button"
-      tabIndex={0}
+      type="button"
       aria-label={`Open ${b.t} by ${b.a}`}
       onClick={() => setDetailId(b.id)}
-      onKeyDown={(e) => {
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
-          setDetailId(b.id);
-        }
-      }}
       className={cn(
         "group flex cursor-pointer flex-col items-stretch text-left select-none outline-none",
         "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded-md",
@@ -148,7 +141,7 @@ export function HomeView() {
       <span className="mt-1.5 flex">
         <StatusTag b={b} />
       </span>
-    </div>
+    </button>
   );
 
   return (
@@ -164,7 +157,7 @@ export function HomeView() {
               <Link
                 key={c.name}
                 href={`/?col=${encodeURIComponent(c.name)}`}
-                aria-current={selected ? "true" : "false"}
+                aria-current={selected ? "page" : undefined}
                 className={cn(
                   "flex h-11 shrink-0 items-center gap-1.5 rounded-full border px-4 text-[15px] outline-none",
                   "focus-visible:ring-2 focus-visible:ring-ring",
