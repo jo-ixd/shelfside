@@ -197,13 +197,6 @@ export function HomeView() {
               shelf{shelfCount === 1 ? "" : "ves"}
             </p>
           </div>
-          <Link
-            href={`/shelf?col=${encodeURIComponent(active.name)}`}
-            className="flex shrink-0 items-center gap-0.5 text-base text-primary"
-          >
-            Shelves
-            <ChevronRightIcon className="size-3.5" />
-          </Link>
         </header>
 
         {inCol.length > 3 ? (
