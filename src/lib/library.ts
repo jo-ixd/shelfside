@@ -334,9 +334,8 @@ export function loadState(): AppState {
     if (
       parsed &&
       okBooks &&
-      parsed.profile &&
-      typeof parsed.profile === "object" &&
-      typeof parsed.profile.accent === "string" &&
+      typeof parsed.profile?.name === "string" &&
+      typeof parsed.profile?.accent === "string" &&
       okCols
     )
       return parsed;

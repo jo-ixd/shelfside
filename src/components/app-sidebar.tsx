@@ -10,9 +10,12 @@ import * as React from "react";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useState } from "react";
-import { ChevronUpIcon, PlusIcon } from "@heroicons/react/24/outline";
+import {
+  ChevronRightIcon,
+  ChevronUpIcon,
+  PlusIcon,
+} from "@heroicons/react/24/outline";
 import { cn } from "cn";
-import { AccountContent } from "@/components/account-content";
 import { AddMenu } from "@/components/add-menu";
 import { Button } from "@/components/ui/button";
 import { colourOf, type Book } from "@/lib/library";
@@ -22,6 +25,13 @@ import { buzz, useLibrary } from "@/lib/store";
    always gets the same shape, so each collection reads as its own stack. */
 const SPINE_H = [34, 30, 36, 28, 32, 36, 30, 34];
 const SPINE_W = [10, 8, 9, 11, 8, 10, 9, 12];
+
+const SETTINGS_ITEMS = [
+  { label: "Account", href: "/settings/account" },
+  { label: "Notifications", href: "/settings/notifications" },
+  { label: "Export data", href: "/settings/export" },
+  { label: "About Shelfside", href: "/settings/about" },
+];
 
 function SpineStack({ books }: { books: Book[] }) {
   return (
@@ -157,8 +167,9 @@ function Sidebar() {
           <button
             ref={accountBtnRef}
             type="button"
-            aria-haspopup="dialog"
+            aria-haspopup="menu"
             aria-expanded={accountOpen}
+            aria-controls="account-menu"
             onClick={() => {
               buzz(10);
               setAccountOpen((o) => !o);
@@ -182,12 +193,41 @@ function Sidebar() {
           {accountOpen ? (
             <div
               ref={accountPanelRef}
-              role="dialog"
-              aria-label="Account"
+              id="account-menu"
+              role="menu"
+              aria-label="Account settings"
               tabIndex={-1}
-              className="absolute bottom-[calc(100%+0.5rem)] left-0 right-0 z-50 max-h-[75vh] overflow-y-auto rounded-xl border border-border bg-popover p-4 shadow-xl shadow-black/40 focus:outline-none"
+              className="absolute bottom-[calc(100%+0.5rem)] left-0 right-0 z-50 rounded-xl border border-border bg-popover p-1.5 shadow-xl shadow-black/40 focus:outline-none"
             >
-              <AccountContent />
+              {SETTINGS_ITEMS.map((item) => {
+                const on = pathname.startsWith(item.href);
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    role="menuitem"
+                    aria-current={on ? "page" : undefined}
+                    onClick={closeAccount}
+                    className={cn(
+                      "flex items-center justify-between gap-2 rounded-lg px-3 py-2 text-sm outline-none",
+                      "focus-visible:ring-2 focus-visible:ring-ring",
+                      "transition-colors motion-safe:duration-200 motion-reduce:transition-none",
+                      on
+                        ? "bg-primary/10 text-primary"
+                        : "text-foreground hover:bg-accent/40 motion-reduce:hover:bg-primary/10",
+                    )}
+                  >
+                    {item.label}
+                    <ChevronRightIcon
+                      aria-hidden
+                      className={cn(
+                        "size-4 shrink-0",
+                        on ? "text-primary/60" : "text-muted-foreground/60",
+                      )}
+                    />
+                  </Link>
+                );
+              })}
             </div>
           ) : null}
         </div>

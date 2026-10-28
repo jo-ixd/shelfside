@@ -1,25 +1,11 @@
 "use client";
 
-/* The account menu's contents: name, a few counts, the theme accent picker
-   and the (still prototype) settings rows. Shared by the desktop sidebar
-   popover and the mobile bottom-nav dialog so both stay identical. */
-
 import { useState } from "react";
-import { ChevronRightIcon } from "@heroicons/react/24/outline";
-import { toast } from "sonner";
-import { Input } from "@/components/ui/input";
 import { ACCENTS } from "@/lib/library";
 import { buzz, useLibrary } from "@/lib/store";
+import { Input } from "@/components/ui/input";
 
-const DUMMY_ROWS = [
-  "Account",
-  "Notifications",
-  "Export data",
-  "About Shelfside",
-];
-const LABELS: Record<string, string> = { "About Shelfside": "About" };
-
-export function AccountContent() {
+export function AccountView() {
   const { state, update } = useLibrary();
   const [nameInput, setNameInput] = useState<string | null>(null);
 
@@ -46,7 +32,7 @@ export function AccountContent() {
   }
 
   return (
-    <div>
+    <div className="px-4 pt-2.5">
       <div className="flex gap-4">
         <div className="flex size-[84px] shrink-0 items-center justify-center rounded-full bg-primary font-serif text-[2rem] font-bold text-primary-foreground">
           {(name || "?").charAt(0).toUpperCase()}
@@ -98,21 +84,6 @@ export function AccountContent() {
             />
           ))}
         </div>
-      </section>
-
-      <section className="pt-4.5">
-        <h2 className="mb-2.5 text-base text-muted-foreground">Settings</h2>
-        {DUMMY_ROWS.map((row) => (
-          <button
-            key={row}
-            type="button"
-            onClick={() => toast(`${row} — not wired up in the prototype yet`)}
-            className="mb-2.5 flex w-full items-center justify-between rounded-xl border border-border bg-card px-3.5 py-3.5 text-left text-base"
-          >
-            {LABELS[row] ?? row}
-            <ChevronRightIcon className="size-4 text-muted-foreground/60" />
-          </button>
-        ))}
       </section>
     </div>
   );
