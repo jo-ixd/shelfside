@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import {
   CameraIcon,
@@ -31,7 +31,6 @@ import {
   bookWidth,
   fileToCoverData,
   GENRE_COLORS,
-  LINK_MATCHES,
   makeCover,
   SCAN_MATCHES,
   type Book,
@@ -41,12 +40,8 @@ import { buzz, useLibrary } from "@/lib/store";
 const GENRES = Object.keys(GENRE_COLORS);
 
 export function AddView() {
-  const params = useSearchParams();
   const router = useRouter();
   const { state, update } = useLibrary();
-
-  const ctx = params.get("ctx") === "wishlist" ? "wishlist" : "library";
-  const wish = ctx === "wishlist";
 
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
@@ -57,13 +52,11 @@ export function AddView() {
   const [matched, setMatched] = useState<string | null>(null);
   const [camMode, setCamMode] = useState<null | "scan" | "ai">(null);
   const [chooser, setChooser] = useState(false);
-  const [fetching, setFetching] = useState(false);
-  const [url, setUrl] = useState("");
 
   const fileRef = useRef<HTMLInputElement>(null);
   const scanIdx = useRef(0);
 
-  const cols = state?.cols.filter((c) => c.wish === wish) ?? [];
+  const cols = state?.cols ?? [];
   const col = colValue || cols[0]?.name || "";
 
   function prefill(m: { t: string; a: string; g: string }, note: string) {
@@ -93,8 +86,7 @@ export function AddView() {
       g: genre,
       col: col,
       shelf: shelf.trim() || "Shelf A",
-      st: wish ? "Wish" : "To Read",
-      wish,
+      st: "To Read",
       _new: true,
       c: GENRE_COLORS[genre] || GENRE_COLORS.Other,
       w: bookWidth(t),
@@ -102,13 +94,8 @@ export function AddView() {
     };
     if (coverData) nb.cover = coverData;
     const ok = update((d) => {
-      if (
-        !d.cols.some(
-          (c) =>
-            c.name.toLowerCase() === nb.col.toLowerCase() && c.wish === wish,
-        )
-      ) {
-        d.cols.push({ name: nb.col, wish });
+      if (!d.cols.some((c) => c.name.toLowerCase() === nb.col.toLowerCase())) {
+        d.cols.push({ name: nb.col });
       }
       d.books.push(nb);
     });
@@ -121,38 +108,16 @@ export function AddView() {
     }
     buzz(25);
     toast(`\u201C${t}\u201D added`);
-    router.push(wish ? "/wishlist" : "/");
-  }
-
-  function fetchLink() {
-    const u = url.trim();
-    if (!u) {
-      toast("Paste a retailer link first");
-      return;
-    }
-    setFetching(true);
-    setTimeout(() => {
-      setFetching(false);
-      const host = Object.keys(LINK_MATCHES).find((h) =>
-        u.toLowerCase().includes(h),
-      );
-      const m = host ? LINK_MATCHES[host] : nextMatch();
-      prefill(m, "Details scraped from the page — edit anything");
-    }, 1600);
+    router.push("/");
   }
 
   if (!state) return null;
 
   const showSave = Boolean(title.trim() || coverData);
-  const back = wish ? "/wishlist" : "/";
 
   return (
     <main>
-      <PageHeader
-        title="Add a book"
-        sub={wish ? "to your wishlist" : "to your library"}
-        back={back}
-      />
+      <PageHeader title="Add a book" sub="to your library" back="/" />
       <div className="px-4 pt-3">
         {matched ? (
           <p className="mb-2 flex items-center gap-2 rounded-lg border border-emerald-800 bg-emerald-950 px-3 py-2 text-base text-emerald-200">
@@ -183,25 +148,6 @@ export function AddView() {
             )}
           </button>
           <div className="min-w-0 flex-1 pt-1">
-            {wish ? (
-              <div className="mb-2">
-                <Label className="text-base text-muted-foreground">
-                  Product page link
-                </Label>
-                <div className="mt-1 flex gap-2">
-                  <Input
-                    value={url}
-                    onChange={(e) => setUrl(e.target.value)}
-                    placeholder="https://…"
-                    inputMode="url"
-                    className="h-10 flex-1 rounded-lg px-3"
-                  />
-                  <Button onClick={fetchLink} className="h-10 font-bold">
-                    {fetching ? "…" : "Fetch"}
-                  </Button>
-                </div>
-              </div>
-            ) : null}
             <div className="flex items-center justify-between">
               <Label
                 htmlFor="f-title"
@@ -301,7 +247,7 @@ export function AddView() {
             onClick={save}
             className="mt-4 h-12 w-full rounded-[10px] text-base font-bold"
           >
-            {wish ? "Add to wishlist" : "Put it on the shelf"}
+            Put it on the shelf
           </Button>
         ) : null}
       </div>
