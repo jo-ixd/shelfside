@@ -54,5 +54,5 @@ Round two is the last word. Anything still unresolved stays visible on the PR fo
 - Never merge a pull request, period.
 - Never create labels.
 - Never downgrade a tier.
-- Every PR comment ends with a signature line naming the model that wrote it, e.g. `Replying as {MODEL_NAME} on behalf of jo-ixd`.
+- Every PR comment ends with a signature line naming the model that wrote it, e.g. `Replying as {MODEL_NAME} on behalf of {GITHUB_USERNAME}`.
 - Never run a gate in the main context — always a fresh sub-agent. The token budget depends on it: selective gates, flash reviewers, word caps in each skill, and findings addressed once, not relitigated.

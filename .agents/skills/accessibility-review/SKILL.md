@@ -1,6 +1,6 @@
 ---
 name: accessibility-review
-description: "A specialised review gate checking UI changes against WCAG 2.2 AA. Scope is strictly the changed components plus any screenshot evidence — never a whole-app audit. Runs as a fresh-context flash sub-agent when the diff touches src/app or src/components. Invoked by the pr-filing skill."
+description: "A specialised review gate checking UI changes against WCAG 2.2 AA. Scope is strictly the changed components plus any screenshot evidence — never a whole-app audit"
 ---
 
 Check the changed UI against WCAG 2.2 level AA. Scope discipline is the whole game here: review only the components the diff touches, in full, plus the screenshot evidence if it exists. Never audit the whole app, never re-report barriers the diff didn't create.
