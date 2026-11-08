@@ -2,7 +2,7 @@ name: Review gate
 
 # Enforces the human-review rule. It recomputes the condition itself so it
 # holds for every PR, however it was filed. The rule is documented in
-# .agents/skills/risk-classifier/SKILL.md — keep the two in sync.
+# .agents/skills/review-judge/SKILL.md — keep the two in sync.
 
 on:
   pull_request:
@@ -39,7 +39,7 @@ jobs:
           fi
 
           # authored lines only: lockfiles are churn, not work. The lockfile
-          # list must stay in sync with .agents/skills/risk-classifier/SKILL.md
+          # list must stay in sync with .agents/skills/review-judge/SKILL.md
           total=0
           criticals=""
           while IFS=$'\t' read -r filename additions deletions; do
