@@ -1,11 +1,9 @@
 ---
 name: accessibility-review
-description: "A specialised review gate checking UI changes against WCAG 2.2 AA. Scope is strictly the changed components plus any screenshot evidence — never a whole-app audit. Runs as a fresh-context flash sub-agent when the code-review pre-review recommends it (`src/app/**` or `src/components/**` changed); invoked by the pr-filing skill. Findings return to the judge — this gate never posts to the PR."
+description: "Check UI changes on a code diff against WCAG 2.2. Invoked by the pr-filing skill or use when the user asks for an accessibility review."
 ---
 
-Check the changed UI against WCAG 2.2 level AA. Scope discipline is the whole game here: review only the components the diff touches, in full, plus the screenshot evidence if it exists. Never audit the whole app, never re-report barriers the diff didn't create.
-
-This app builds on shadcn/base-ui primitives in `src/components/ui`, which supply semantics for free — focus your findings on usage: missing labels, aria overrides, custom markup that drops roles, and wiring that strands keyboard users.
+Check the changed UI against WCAG 2.2 level AA. Review only the components the diff touches, in full, plus the screenshot evidence if it exists. Never audit the whole app unless asked.
 
 ## The checklist
 
@@ -41,4 +39,4 @@ If screenshot evidence exists (`evidence/*.png` from `npm run screenshot` — de
 
 Under 300 words. One finding per issue: severity, the WCAG criterion, `file:line`, what the barrier is, and the smallest fix. End with a verdict line: worst severity, and whether the gate passes — any finding at 8 or above fails the gate.
 
-Return this report to the orchestrator. You never post to the PR — the judge reads your findings, re-checks them, and decides what reaches the PR.
+Return this report to the orchestrator or user. You never post to the PR — the judge reads your findings, re-checks them, and decides what reaches the PR.
