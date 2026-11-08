@@ -27,7 +27,7 @@ Check the changed UI against WCAG 2.2 level AA. Review only the components the d
 
 ## Evidence
 
-If screenshot evidence exists (`evidence/*.png` from `npm run screenshot` — desktop and mobile per page), and your model can view images, read them for contrast, target sizes, and focus-obscuring chrome — a screenshot answers in one look what would otherwise cost a DOM crawl. If you cannot view images, review from the code alone and note that the evidence awaits human eyes. If there is no evidence at all, review from the code and note that too.
+If screenshot evidence exists (`evidence/*.png`, captured ad hoc with playwright — desktop and mobile per page), and your model can view images, read them for contrast, target sizes, and focus-obscuring chrome — a screenshot answers in one look what would otherwise cost a DOM crawl. If you cannot view images, review from the code alone and note that the evidence awaits human eyes. If there is no evidence at all, review from the code and note that too.
 
 ## Severity anchors
 
