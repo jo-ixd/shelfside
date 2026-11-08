@@ -50,16 +50,16 @@ Rules for `comments`: one per surviving finding. `line` must be a line that appe
   - **Clean bill** — nothing survived, so the builder has nothing to fix and round 2 has nothing to verify. Always skip.
   - **One or two mechanical findings** — each has a single obvious fix; the orchestrator can spot-check the fix diff at close-out, and any doubt stays with the human anyway. Default to skipping for these; this is your call, not the pipeline's.
 - **`needed: true`**, when any of these hold:
-  - **Three or more surviving findings**, or fixes that would spread the builder across many files.
+  - **Three or more surviving findings** — volume itself weighs in: the more threads a repair touches, the likelier one lands wrong. Still waivable at your call when every one of them is near-trivial and confined to one or two lines.
   - **A non-trivial fix** — the smallest fix changes behavior, spans modules, or sits on a critical path, so a wrong fix is easy to make and hard to spot.
   - **Disputed ground** — you re-raised a pre-review dismissal the builder rejected, or overrode a gate's severity; a second pass earns its tokens there.
   - **Escalation risk** — the prescribed fixes would plausibly push the size or tier over a line, which round 2 must confirm.
 
-Leaning to skip is the goal — the hard gate is that round 2 never runs a second time; this call is the only lever the pipeline has to spend less, not more.
+Always return the call with a reason — never omit it: the orchestrator reads a missing call as `needed: true` and spends the second pass anyway. Leaning to skip is the goal — the hard gate is that round 2 never runs a second time; this call is the only lever the pipeline has to spend less, not more.
 
 ## Round 2 — judge the fixes
 
-This pass runs **only when your round-1 `round2` call said so** — the orchestrator reads `round2` from the review it filed. When it runs, here are your inputs: the round-1 review as filed, the builder's inline replies verbatim, the commits since round 1, the fix diff (`git diff <round1-sha>...HEAD`), and the full PR diff command.
+This pass runs **only when your round-1 `round2` call said so** — the orchestrator peels `round2` off before filing (it is not on GitHub), so it carries your call into the pipeline, and a review that lacks the call for any reason is read as `needed: true`. With it made, here are your inputs: the round-1 review as filed, the builder's inline replies verbatim, the commits since round 1, the fix diff (`git diff <round1-sha>...HEAD`), and the full PR diff command.
 
 Answer each, with evidence:
 
