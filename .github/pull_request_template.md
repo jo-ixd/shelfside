@@ -12,6 +12,7 @@ Any evidence, screenshots, or recordings. If making frontend UI changes, attach 
 - [ ] Added unit tests and passing
 - [ ] Ran builds locally and passes without errors or warning
 - [ ] Code has been linted, formatted and type checked without errors or warning
-- [ ] Code has through the review gates
+- [ ] Code has gone through the review gates
+
 <!-- Add only if needed
 - [ ] Reviewed by human -->
