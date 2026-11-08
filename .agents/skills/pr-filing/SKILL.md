@@ -1,24 +1,25 @@
 ---
 name: pr-filing
-description: "Orchestrate the pipeline that stops bugs reaching production: verify while a fresh reviewer reads the diff, open a draft PR, run the specialised AI gates silently, let a GLM-5.3 judge file one review with every surviving finding, fix and reply inline, run a judge-only round 2, then close out with one final comment carrying the merge verdict. Use when it is time to open a pull request."
+description: "Orchestrate the pipeline that stops bugs reaching production: verify while a fresh reviewer reads the diff, open a draft PR, run the specialised AI gates silently, let a GLM-5.3 judge file one review with every surviving finding, fix and reply inline, then run a judge-only round 2 only when the round-1 judge calls for it, and close out with one final comment carrying the merge verdict. Use when it is time to open a pull request."
 ---
 
 ## The pipeline
 
-0. **Verify and pre-review, in parallel** — spawn the pre-review sub-agent in the background first (`code-review` skill, pipeline mode: one fresh `opencode-go/glm-5.3-flash` sub-agent), then run the verification ladder from `AGENTS.md` in the main session while it works. Both must finish before anything else: the ladder green, the pre-review report in hand.
+0. **Verify and pre-review, in parallel** — spawn the pre-review sub-agent in the background first (`code-review` skill, pipeline mode: one fresh `opencode-go/glm-5.3-flash` sub-agent), then run the verification ladder from `AGENTS.md` in the main session while it works. Both must finish before anything else: the ladder green, the pre-review report in hand. When the ladder is green, tick the template's first three checklist items in the PR body — the checklist is filled in **as the step that satisfies each item completes, never all at once at the end**.
 1. **Fix or push back** — every pre-review finding is fixed or explicitly dismissed with a reason **before the PR opens**; pre-PR fixes are the cheapest there will ever be. Re-run the ladder after any non-trivial fix. Record the dispositions (fixed in `<sha>` / dismissed: reason) — the judge re-checks them.
-2. **Open a draft PR and watch CI** — `gh pr create --draft`, filling in `.github/pull_request_template.md`: what changed, systems touched, and the evidence (describe what the screenshots show and reference their `evidence/` paths — the CLI cannot upload images, so the human drags them in). Then watch CI: `gh pr checks <number> --watch`. Every job must pass except `review-gate`, which fails **by design** on PRs that need human review until a human approves — treat its state as information, not a blocker. If anything else fails, fix it and push before running the gates.
+2. **Open a draft PR and watch CI** — `gh pr create --draft`, filling in `.github/pull_request_template.md`: what changed, systems touched, and the evidence (describe what the screenshots show and reference their `evidence/` paths — the CLI cannot upload images, so the human drags them in). Then compute authored lines against the merge-base and **apply the size label this step** (`size-s` under 100, `size-m` 100–499, `size-l` 500–999, `size-xl` 1000+; lockfiles excluded, critical paths as in the `review-judge` brief — any touch makes the tier human, so also apply `needs review`). A PR is never filed unlabelled, and the label is applied at creation. Then watch CI: `gh pr checks <number> --watch`. Every job must pass except `review-gate`, which fails **by design** on PRs that need human review until a human approves — treat its state as information, not a blocker. If anything else fails, fix it and push before running the gates.
 3. **Run the recommended gates** — the pre-review's `## Gates` recommendation decides which specialised gates run; the bug hunt always runs. Override a recommendation only with a stated reason, and pass that reason to the judge. Gates are fresh flash sub-agents running in parallel — they return scored findings to you and never post to the PR.
-4. **Judge, round 1** — a fresh `opencode-go/glm-5.3` sub-agent runs the `review-judge` skill (round 1): it re-checks every gate finding against the code, drops the noise, assesses the PR's risk, and returns one review. You file it as a single GitHub review — body plus inline comments. Apply the tier label from its risk assessment.
+4. **Judge, round 1** — a fresh `opencode-go/glm-5.3` sub-agent runs the `review-judge` skill (round 1): it re-checks every gate finding against the code, drops the noise, assesses the PR's risk, and returns one review. You file it as a single GitHub review — body plus inline comments — and apply the tier label from its risk assessment. The review also carries the judge's **`round2` call**: peel it off, record it, and post the rest verbatim (GitHub does not need the field). Gating the review on the PR means the "Code has gone through the review gates" checklist item is satisfied — tick it now, while filing, not at close-out.
 5. **Fix and reply inline** — fix or rebut every inline finding, push commits, then reply to each thread. These replies are the collapsed-by-default comments; the PR conversation stays clean.
-6. **Judge, round 2** — a fresh `opencode-go/glm-5.3` sub-agent runs `review-judge` (round 2): did the fixes land, does the risk still apply, has the PR bloated or drifted. Its verdict returns to you — no comment of its own.
-7. **Close out** — fix anything round 2 raised, then post exactly one final comment: the round-2 outcome and the merge verdict. Update labels to the final tier. Mark the PR ready (`gh pr ready`).
+6. **Judge, round 2** — only when the round-1 `round2` call said so (see [Round 2](#round-2)); if the review carries no `round2` call at all, treat it as `needed: true` — a skipped re-check fails closed. Otherwise skip straight to close out and spot-check the fixes yourself.
+
+7. **Close out** — fix anything round 2 raised (or spot-check your round-1 fixes yourself if round 2 was waived), then post exactly one final comment: the outcome and the merge verdict. Update labels to the final tier. Mark the PR ready (`gh pr ready`).
 
 ## Roles
 
 - `pre-reviewer:` one fresh `opencode-go/glm-5.3-flash` sub-agent (`code-review` skill). Pure review, no scoring; recommends the gates. Runs in the background during the ladder.
 - `gate reviewers:` fresh `opencode-go/glm-5.3-flash` sub-agents, one per gate, in parallel. They score findings and return them; they never post to the PR.
-- `judge:` a fresh `opencode-go/glm-5.3` sub-agent (`review-judge` skill). The only findings that reach the PR are ones it has confirmed. It files nothing itself — you file its round-1 review, and its round-2 verdict goes into your final comment.
+- `judge:` a fresh `opencode-go/glm-5.3` sub-agent (`review-judge` skill). The only findings that reach the PR are ones it has confirmed. It files nothing itself — you file its round-1 review (minus the `round2` call, which records whether round 2 runs at all), and its round-2 verdict goes into your final comment.
 - `builder:` you. You fix, you rebut, you file the judge's review, you reply inline, you write the final comment. Context flows agent-to-agent, never through PR comments.
 
 ## The gates
@@ -36,7 +37,7 @@ Each gate is one fresh flash sub-agent. Its prompt carries everything it cannot 
 
 Collect the gate reports, then spawn the judge with the **full `review-judge` brief** plus: the PR number and diff command, the changed-file list, all gate findings verbatim, the pre-review findings with your dispositions, and the GitHub username for the signature line.
 
-The judge returns a fenced `json` block: a review body and one inline comment per surviving finding. File it verbatim as ONE review:
+The judge returns a fenced `json` block: a review body, one inline comment per surviving finding, and a `round2` call. File it as ONE review, stripping `round2` first and recording it for step 6:
 
 ```
 cat > /tmp/opencode/review.json <<'EOF'
@@ -49,7 +50,7 @@ gh api repos/{owner}/{repo}/pulls/{number}/reviews --input /tmp/opencode/review.
 
 ## Round 1 — fixes and inline replies
 
-Record the head SHA before fixing (`git rev-parse HEAD`) — round 2 needs it. Fix or rebut every inline finding and push. Then reply to each thread — one short reply per comment; these are the collapsed-by-default comments on GitHub. Keep each reply to **one or two plain lines** — the compact pattern, not the finding's full story. Write the reply into a JSON file and post it with `gh api --input`, never through shell escaping; after posting, reread the rendered body to catch leaked escapes:
+Record the head SHA before fixing (`git rev-parse HEAD`) — the fix diff needs it, whether round 2 verifies it or you spot-check it at close-out. Fix or rebut every inline finding and push. Then reply to each thread — one short reply per comment; these are the collapsed-by-default comments on GitHub. Keep each reply to **one or two plain lines** — the compact pattern, not the finding's full story. Write the reply into a JSON file and post it with `gh api --input`, never through shell escaping; after posting, reread the rendered body to catch leaked escapes:
 
 ```
 gh api repos/{owner}/{repo}/pulls/{number}/comments --jq '.[].id'    # list inline comment ids
@@ -60,7 +61,9 @@ gh api -X PATCH repos/{owner}/{repo}/pulls/comments/{id} --input reply.json    #
 
 ## Round 2
 
-Spawn a fresh judge with the **full `review-judge` brief** (round 2) plus: the round-1 review as filed, your inline replies verbatim, the commits since round 1 (`git log <round1-sha>..HEAD --oneline`), the fix diff (`git diff <round1-sha>...HEAD`), and the full PR diff command. Its verdict returns to you only.
+Run this **only when the round-1 `round2` call was `needed: true`**; if the review carries no `round2` call at all, treat it as `needed: true`. Never run it because the fixes felt risky: the judge owned that call, and its reason is quoted in the final comment.
+
+If it runs: spawn a fresh judge with the **full `review-judge` brief** (round 2) plus: the round-1 review as filed, your inline replies verbatim, the commits since round 1 (`git log <round1-sha>..HEAD --oneline`), the fix diff (`git diff <round1-sha>...HEAD`), and the full PR diff command. Its verdict returns to you only.
 
 If it proposes an edit to the size/tier rule in round 2's fifth question, apply it as part of the close-out — it keeps `review-gate.yml` honest — or record in the final comment why not.
 
@@ -68,8 +71,8 @@ If it proposes an edit to the size/tier rule in round 2's fifth question, apply 
 
 One final comment, under 150 words, and nothing else on the PR after it:
 
-- Round-2 outcome in two or three lines: fixes verified, tier confirmed or escalated, bloat or drift if any, anything you chose not to fix and why.
-- The verdict line. `quick merge` requires all three: the tier is `auto`, the judge's recommendation is `quick merge`, and CI is green with no unresolved judge findings — then say plainly: "LGTM — let's get this merged." Otherwise say plainly: "Needs human review — the `review-gate` job stays red and the `needs review` label stays until you approve."
+- The outcome in two or three lines. If round 2 ran: fixes verified, tier confirmed or escalated, bloat or drift if any, anything you chose not to fix and why. If round 2 was waived: say so with the judge's `round2` reason, and confirm you spot-checked the fixes yourself (or that there were none).
+- The verdict line. `quick merge` requires all three: the tier is `auto`, the judge's recommendation is `quick merge` — round 2's, or round 1's verdict when round 2 was waived — and CI is green with no unresolved judge findings — then say plainly: "LGTM — let's get this merged." Otherwise say plainly: "Needs human review — the `review-gate` job stays red and the `needs review` label stays until you approve."
 - Update labels to the final tier. Never downgrade; never create labels.
 - End with the signature line: `Replying as {MODEL_NAME} on behalf of {GITHUB_USERNAME}`.
 - Mark the PR ready: `gh pr ready`.
@@ -80,7 +83,7 @@ The finished PR reads as exactly four things: the template body, the judge's rou
 
 - Never open a PR that has not passed step 0 — no exceptions for "small" changes.
 - Reviewers never post to the PR. The PR carries the template body, the judge's round-1 review (filed by you), your inline replies, and your final comment — nothing else.
-- Two judge rounds, hard stop. The pipeline ends; the human decides. Unresolved findings stay visible in the final comment — the pipeline surfaces disagreement, it never buries it.
+- Two judge rounds at most, hard stop — and round 2 runs only when the round-1 judge's `round2` call asks for it. The pipeline never re-runs a waived round 2, and never runs anything beyond round 2; the human decides. Unresolved findings stay visible in the final comment — the pipeline surfaces disagreement, it never buries it.
 - Never merge a pull request, period.
 - Never create labels. Never downgrade a tier.
 - Never run a gate, the pre-review, or the judge in the main context — fresh sub-agents only. The token budget depends on it: flash reviewers, word caps in every skill, one judge review instead of per-gate comment threads, and findings addressed once — after judgement, not before.
