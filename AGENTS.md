@@ -36,8 +36,8 @@ For changes that touch `src/app/**` or `src/components/**`, also do end-to-end v
 
 - start it in the background and wait for it to be ready
 - exercise the changed flow end to end, not just the happy path
-- capture evidence with `npm run screenshot -- <url>` for each affected page
-- read the PNGs in `evidence/` yourself and confirm they show what you intended
+- capture evidence with `npm run screenshot -- <url>` for each affected page — the script fails on unreachable pages, and the PNG dimensions confirm a real render
+- if your model can view images, read the PNGs in `evidence/` and confirm they show what you intended; if it cannot, say so in the PR and leave visual confirmation to the human reviewer
 - stop the server when done
 
 Never open a PR that has not passed this ladder. The `pr-filing` skill takes this as step zero and refuses to file without it.
