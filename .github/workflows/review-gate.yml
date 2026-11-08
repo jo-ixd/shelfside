@@ -1,0 +1,80 @@
+name: Review gate
+
+# Enforces the human-review rule. It recomputes the condition itself so it
+# holds for every PR, however it was filed. The rule is documented in
+# .agents/skills/risk-classifier/SKILL.md — keep the two in sync.
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  pull_request_review:
+    types: [submitted, dismissed]
+
+permissions:
+  contents: read
+  pull-requests: read
+
+concurrency:
+  group: review-gate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  gate:
+    name: human review gate
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      REPO: ${{ github.repository }}
+      PR_NUMBER: ${{ github.event.pull_request.number }}
+      PR_HEAD: ${{ github.event.pull_request.head.repo.full_name }}
+    steps:
+      - name: Check whether this PR needs a human review
+        run: |
+          set -euo pipefail
+
+          # fork pull requests run with a read-only token, skip those
+          if [ "$PR_HEAD" != "$REPO" ]; then
+            echo "Pull request is from a fork, skipping the gate"
+            exit 0
+          fi
+
+          total=$(gh api "repos/$REPO/pulls/$PR_NUMBER" --jq '.additions + .deletions')
+
+          # a change is critical if it touches CI, the database, core logic
+          # or the build pipeline, no matter how few lines change
+          critical="none"
+          while read -r file; do
+            case "$file" in
+              .github/workflows/*|server/migrations/*|server/src/*|server/tests/*|server/Cargo.toml|src/lib/*|next.config.ts|tsconfig.json|vitest.config.mts|eslint.config.mjs)
+                critical="$file"
+                break
+                ;;
+            esac
+          done < <(gh api --paginate "repos/$REPO/pulls/$PR_NUMBER/files?per_page=100" --jq '.[].filename')
+
+          needs_review=false
+          if [ "$total" -ge 500 ]; then
+            needs_review=true
+          fi
+          if [ "$critical" != "none" ]; then
+            needs_review=true
+          fi
+
+          if [ "$needs_review" = false ]; then
+            echo "$total changed lines, no critical paths touched: no human review required"
+            exit 0
+          fi
+
+          reason="$total changed lines"
+          if [ "$critical" != "none" ]; then
+            reason="$reason, touches critical path $critical"
+          fi
+
+          approvals=$(gh api "repos/$REPO/pulls/$PR_NUMBER/reviews" --jq '[.[] | select(.state == "APPROVED") | .user.login] | unique | length')
+
+          if [ "$approvals" -eq 0 ]; then
+            echo "::error::Human review required ($reason). Approve this PR to pass the gate."
+            exit 1
+          fi
+
+          echo "Human review present ($reason), gate passes"
