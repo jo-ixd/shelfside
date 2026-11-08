@@ -34,11 +34,14 @@ const browser = await chromium.launch();
 
 try {
   for (const url of urls) {
+    // one slug per URL: collisions between similar urls get suffixed, not
+    // every capture of the same url
+    const slug = slugFor(url);
     for (const [name, viewport] of Object.entries(viewports)) {
       const page = await browser.newPage({ viewport });
       try {
         await page.goto(url, { waitUntil: "networkidle" });
-        const file = `${outDir}/${slugFor(url)}-${name}.png`;
+        const file = `${outDir}/${slug}-${name}.png`;
         await page.screenshot({ path: file, fullPage: true });
         console.log(file);
       } finally {

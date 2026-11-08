@@ -40,6 +40,15 @@ jobs:
 
           # authored lines only: lockfiles are churn, not work. The lockfile
           # list must stay in sync with .agents/skills/review-judge/SKILL.md
+          # capture the files list first: an API failure here must fail the
+          # gate closed, not fall through as an empty list that skips review
+          tsv=$(gh api --paginate "repos/$REPO/pulls/$PR_NUMBER/files?per_page=100" \
+            --jq '.[] | [.filename, .additions, .deletions] | @tsv') \
+            || { echo "::error::Could not list pull request files, failing closed" ; exit 1 ; }
+          if [ -z "$tsv" ]; then
+            echo "::error::No pull request files returned, failing closed" ; exit 1
+          fi
+
           total=0
           criticals=""
           while IFS=$'\t' read -r filename additions deletions; do
@@ -55,8 +64,7 @@ jobs:
                 criticals="${criticals:+$criticals, }$filename"
                 ;;
             esac
-          done < <(gh api --paginate "repos/$REPO/pulls/$PR_NUMBER/files?per_page=100" \
-            --jq '.[] | [.filename, .additions, .deletions] | @tsv')
+          done <<< "$tsv"
 
           needs_review=false
           if [ "$total" -ge 500 ]; then

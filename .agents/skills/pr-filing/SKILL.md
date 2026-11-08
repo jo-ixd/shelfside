@@ -61,7 +61,7 @@ gh api repos/{owner}/{repo}/pulls/{number}/comments/{id}/replies -f body="Not fi
 
 Spawn a fresh judge with the **full `review-judge` brief** (round 2) plus: the round-1 review as filed, your inline replies verbatim, the commits since round 1 (`git log <round1-sha>..HEAD --oneline`), the fix diff (`git diff <round1-sha>...HEAD`), and the full PR diff command. Its verdict returns to you only.
 
-If it proposes an edit to the size/tier rule in the classifier question, apply it as part of the close-out — it keeps `review-gate.yml` honest — or record in the final comment why not.
+If it proposes an edit to the size/tier rule in round 2's fifth question, apply it as part of the close-out — it keeps `review-gate.yml` honest — or record in the final comment why not.
 
 ## Close out
 
