@@ -22,25 +22,11 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 - `npm run build` — production build; run after any structural change (new/deleted routes or files).
 - `npm run screenshot -- <url>` — Playwright capture of a page at desktop and mobile sizes; PNGs land in `evidence/` (gitignored). Browsers install once with `npx playwright install chromium`.
 
-## Verifying changes
+### Verifying locally
 
-Before any review — human or AI — verify the change yourself, in this order:
+Make sure you after writing the code you run the local verification pipeline. Lint, format, typecheck, test and build.
 
-1. `npm run lint` — zero errors, zero warnings
-2. `npm run typecheck` — zero errors
-3. `npm run test` — all green
-4. `npm run format:check` (or `format` before committing)
-5. `npm run build` — passes without errors or warnings
-
-For changes that touch `src/app/**` or `src/components/**`, also do end-to-end verification — this is the one case where the dev server may run:
-
-- start it in the background and wait for it to be ready
-- exercise the changed flow end to end, not just the happy path
-- capture evidence with `npm run screenshot -- <url>` for each affected page — the script fails on unreachable pages, and the PNG dimensions confirm a real render
-- if your model can view images, read the PNGs in `evidence/` and confirm they show what you intended; if it cannot, say so in the PR and leave visual confirmation to the human reviewer
-- stop the server when done
-
-Never open a PR that has not passed this ladder. The `pr-filing` skill takes this as step zero and refuses to file without it.
+Never open a PR that has not been verified locally. The `pr-filing` skill takes this as step zero and refuses to file without it.
 
 ## Code rules
 
@@ -53,6 +39,4 @@ This is a typescript codebase, do the following:
 
 Follow conventional commits and simple plain English messages describing what you did not how you did it, for example, `docs: changed AGENTS.md`. Make sure to commit often.
 
-When verifying code, never run a dev server unless doing end-to-end testing. Never merge a pull request, period.
-
-When filing a PR, refer to `pr-filing` skill.
+Never merge a pull request, period.
