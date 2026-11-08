@@ -31,6 +31,6 @@ This is a typescript codebase, do the following:
 
 Follow conventional commits and simple plain English messages describing what you did not how you did it, for example, `docs: changed AGENTS.md`. Make sure to commit often.
 
-When verifying code, never run a dev server rely on testing.
+When verifying code, never run a dev server unless doing end-to-end testing. Never merge a pull request, period.
 
-Never merge a pull request, period.
+When filing a PR, refer to `pr-filing` skill.

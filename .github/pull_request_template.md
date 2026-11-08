@@ -12,5 +12,6 @@ Any evidence, screenshots, or recordings. If making frontend UI changes, attach 
 - [ ] Added unit tests and passing
 - [ ] Ran builds locally and passes without errors or warning
 - [ ] Code has been linted, formatted and type checked without errors or warning
-- [ ] Code has been reviewed by AI in fresh context
-- [ ] Reviewed (if AI is submitting this PR this means a human has reviewed this)
+- [ ] Code has through the review gates
+<!-- Add only if needed
+- [ ] Reviewed by human -->
