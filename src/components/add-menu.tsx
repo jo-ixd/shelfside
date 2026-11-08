@@ -16,16 +16,13 @@ import {
 import { buzz } from "@/lib/store";
 
 export function AddMenu({
-  ctx,
   open,
   onOpenChange,
 }: {
-  ctx: "library" | "wishlist";
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }) {
   const router = useRouter();
-  const noun = ctx === "wishlist" ? "list" : "collection";
 
   function go(href: string) {
     onOpenChange(false);
@@ -39,13 +36,13 @@ export function AddMenu({
         <DialogHeader>
           <DialogTitle className="font-serif text-lg">Add</DialogTitle>
           <DialogDescription>
-            A book to shelve, or a new {noun} to shelve it in.
+            A book to shelve, or a new collection to shelve it in.
           </DialogDescription>
         </DialogHeader>
         <div className="flex flex-col gap-2.5">
           <button
             type="button"
-            onClick={() => go(`/add?ctx=${ctx}`)}
+            onClick={() => go("/add")}
             className="flex w-full items-center gap-3 rounded-xl border border-border bg-secondary px-3.5 py-3.5 text-left text-base text-foreground"
           >
             <BookOpenIcon className="size-6 shrink-0 text-primary" />
@@ -58,14 +55,14 @@ export function AddMenu({
           </button>
           <button
             type="button"
-            onClick={() => go(`/collections/new?ctx=${ctx}`)}
+            onClick={() => go("/collections/new")}
             className="flex w-full items-center gap-3 rounded-xl border border-border bg-secondary px-3.5 py-3.5 text-left text-base text-foreground"
           >
             <PlusIcon className="size-6 shrink-0 text-primary" />
             <span>
-              New {noun}
+              New collection
               <small className="block text-base text-muted-foreground">
-                Group books into a new {noun}
+                Group books into a new collection
               </small>
             </span>
           </button>
