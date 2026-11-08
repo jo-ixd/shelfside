@@ -2,7 +2,8 @@ import { chromium } from "playwright";
 import { mkdirSync } from "node:fs";
 
 // Captures screenshot evidence for PR review: each URL at desktop and mobile
-// sizes. Output lands in evidence/ (gitignored). The CLI cannot upload images
+// sizes. Output always lands in evidence/, per the AGENTS.md convention. The
+// CLI cannot upload images
 // to GitHub, so reference these paths in the PR body and attach them by hand.
 
 const urls = process.argv.slice(2);
@@ -11,7 +12,7 @@ if (urls.length === 0) {
   process.exit(1);
 }
 
-const outDir = process.env.EVIDENCE_DIR ?? "evidence";
+const outDir = "evidence";
 mkdirSync(outDir, { recursive: true });
 
 const viewports = {

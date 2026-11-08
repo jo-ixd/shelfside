@@ -48,7 +48,7 @@ Answer each, with evidence:
 2. **Does the risk still apply?** Recompute size and critical paths on the post-fix diff. Escalate the tier if the fixes pushed it over a line; never downgrade.
 3. **Has the PR bloated?** Count what the fixes added. Gratuitous reformatting, drive-by refactors, and scope creep in fix commits are findings.
 4. **Has anything gone astray?** Is the PR still what its description says it is?
-5. **Does the risk classifier need changing?** Did the size/tier rule misjudge this PR? If yes, propose the specific edit (thresholds, critical-path list) — the builder applies it or records why not.
+5. **Does the size/tier rule need changing?** Did these thresholds or critical paths misjudge this PR? If yes, propose the specific edit (thresholds, critical-path list) — the builder applies it or records why not.
 
 ### Output — to the orchestrator only
 
