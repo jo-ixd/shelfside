@@ -19,19 +19,32 @@ const viewports = {
   mobile: { width: 390, height: 844 },
 };
 
-const browser = await chromium.launch();
-
-for (const url of urls) {
-  for (const [name, viewport] of Object.entries(viewports)) {
-    const page = await browser.newPage({ viewport });
-    await page.goto(url, { waitUntil: "networkidle" });
-    const slug =
-      url.replace(/[^a-z0-9]+/gi, "-").replace(/^-+|-+$/g, "") || "page";
-    const file = `${outDir}/${slug}-${name}.png`;
-    await page.screenshot({ path: file, fullPage: true });
-    console.log(file);
-    await page.close();
-  }
+// Slugs are unique per run: urls that would slugify to the same name get a
+// numeric suffix instead of silently overwriting each other's evidence.
+const slugs = new Map();
+function slugFor(url) {
+  let slug = url.replace(/[^a-z0-9]+/gi, "-").replace(/^-+|-+$/g, "") || "page";
+  const seen = (slugs.get(slug) ?? 0) + 1;
+  slugs.set(slug, seen);
+  return seen === 1 ? slug : `${slug}-${seen}`;
 }
 
-await browser.close();
+const browser = await chromium.launch();
+
+try {
+  for (const url of urls) {
+    for (const [name, viewport] of Object.entries(viewports)) {
+      const page = await browser.newPage({ viewport });
+      try {
+        await page.goto(url, { waitUntil: "networkidle" });
+        const file = `${outDir}/${slugFor(url)}-${name}.png`;
+        await page.screenshot({ path: file, fullPage: true });
+        console.log(file);
+      } finally {
+        await page.close();
+      }
+    }
+  }
+} finally {
+  await browser.close();
+}

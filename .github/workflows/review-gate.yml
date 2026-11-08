@@ -38,25 +38,31 @@ jobs:
             exit 0
           fi
 
-          total=$(gh api "repos/$REPO/pulls/$PR_NUMBER" --jq '.additions + .deletions')
+          # authored lines only: lockfiles are churn, not work. The lockfile
+          # list must stay in sync with .agents/skills/risk-classifier/SKILL.md
+          total=0
+          criticals=""
+          while IFS=$'\t' read -r filename additions deletions; do
+            case "$filename" in
+              package-lock.json|server/Cargo.lock) continue ;;
+            esac
+            total=$((total + additions + deletions))
 
-          # a change is critical if it touches CI, the database, core logic
-          # or the build pipeline, no matter how few lines change
-          critical="none"
-          while read -r file; do
-            case "$file" in
+            # a change is critical if it touches CI, the database, core logic
+            # or the build pipeline, no matter how few lines change
+            case "$filename" in
               .github/workflows/*|server/migrations/*|server/src/*|server/tests/*|server/Cargo.toml|src/lib/*|next.config.ts|tsconfig.json|vitest.config.mts|eslint.config.mjs)
-                critical="$file"
-                break
+                criticals="${criticals:+$criticals, }$filename"
                 ;;
             esac
-          done < <(gh api --paginate "repos/$REPO/pulls/$PR_NUMBER/files?per_page=100" --jq '.[].filename')
+          done < <(gh api --paginate "repos/$REPO/pulls/$PR_NUMBER/files?per_page=100" \
+            --jq '.[] | [.filename, .additions, .deletions] | @tsv')
 
           needs_review=false
           if [ "$total" -ge 500 ]; then
             needs_review=true
           fi
-          if [ "$critical" != "none" ]; then
+          if [ -n "$criticals" ]; then
             needs_review=true
           fi
 
@@ -66,11 +72,20 @@ jobs:
           fi
 
           reason="$total changed lines"
-          if [ "$critical" != "none" ]; then
-            reason="$reason, touches critical path $critical"
+          if [ -n "$criticals" ]; then
+            reason="$reason, touches critical paths: $criticals"
           fi
 
-          approvals=$(gh api "repos/$REPO/pulls/$PR_NUMBER/reviews" --jq '[.[] | select(.state == "APPROVED") | .user.login] | unique | length')
+          # only an approval pinned to the current head commit by a repo
+          # owner, member, or collaborator counts: approvals left before the
+          # latest push, or from read-only participants, don't
+          head=$(gh api "repos/$REPO/pulls/$PR_NUMBER" --jq '.head.sha')
+          case "$head" in
+            ''|*[!0-9a-f]*) echo "::error::GitHub returned a malformed head sha" ; exit 1 ;;
+          esac
+
+          approvals=$(gh api "repos/$REPO/pulls/$PR_NUMBER/reviews" \
+            --jq "[.[] | select(.state == \"APPROVED\" and .commit_id == \"$head\" and (.author_association == \"OWNER\" or .author_association == \"MEMBER\" or .author_association == \"COLLABORATOR\")) | .user.login] | unique | length")
 
           if [ "$approvals" -eq 0 ]; then
             echo "::error::Human review required ($reason). Approve this PR to pass the gate."
