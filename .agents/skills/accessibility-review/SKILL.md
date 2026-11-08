@@ -1,6 +1,6 @@
 ---
 name: accessibility-review
-description: "A specialised review gate checking UI changes against WCAG 2.2 AA. Scope is strictly the changed components plus any screenshot evidence — never a whole-app audit"
+description: "A specialised review gate checking UI changes against WCAG 2.2 AA. Scope is strictly the changed components plus any screenshot evidence — never a whole-app audit. Runs as a fresh-context flash sub-agent when the code-review pre-review recommends it (`src/app/**` or `src/components/**` changed); invoked by the pr-filing skill. Findings return to the judge — this gate never posts to the PR."
 ---
 
 Check the changed UI against WCAG 2.2 level AA. Scope discipline is the whole game here: review only the components the diff touches, in full, plus the screenshot evidence if it exists. Never audit the whole app, never re-report barriers the diff didn't create.
@@ -39,4 +39,6 @@ If screenshot evidence exists (`evidence/*.png` from `npm run screenshot` — de
 
 ## Report
 
-Under 300 words. One finding per issue: severity, the WCAG criterion, `file:line`, what the barrier is, and the smallest fix. End with a verdict line: worst severity, and whether the gate passes — any finding at 8 or above fails the gate. The orchestrator posts this as the PR comment; end it with the signature line from the `pr-filing` skill.
+Under 300 words. One finding per issue: severity, the WCAG criterion, `file:line`, what the barrier is, and the smallest fix. End with a verdict line: worst severity, and whether the gate passes — any finding at 8 or above fails the gate.
+
+Return this report to the orchestrator. You never post to the PR — the judge reads your findings, re-checks them, and decides what reaches the PR.

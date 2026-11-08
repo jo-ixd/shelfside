@@ -1,6 +1,6 @@
 ---
 name: security-review
-description: "A specialised review gate that hunts for security holes in the diff: injection, broken auth, access-control gaps, data exposure, and untrusted input, across the Next.js frontend and the axum/sqlx/SQLite Rust server. Runs as a fresh-context flash sub-agent when the diff touches the backend, auth, input handling, or dependencies. Invoked by the pr-filing skill."
+description: "A specialised review gate that hunts for security holes in the diff: injection, broken auth, access-control gaps, data exposure, and untrusted input, across the Next.js frontend and the axum/sqlx/SQLite Rust server. Runs as a fresh-context flash sub-agent when the code-review pre-review recommends it (backend, auth, input handling, or dependencies changed); invoked by the pr-filing skill. Findings return to the judge — this gate never posts to the PR."
 ---
 
 Review the diff the way an attacker would read it: assume they have the code and are looking for the shortest path in. This is not a style review — the `code-review` gate covers quality. Here, only findings that someone could exploit or that leak something sensitive count.
@@ -47,4 +47,6 @@ Match the diff against this list. It is tuned to this stack — skip anything th
 
 ## Report
 
-One finding per issue, under 400 words total: severity, title, `file:line`, a one-sentence exploit path, and the suggested fix. Distinguish confirmed holes (quoted from the code) from suspicions (what you'd need to check). End with a verdict line: worst severity found, and whether the gate passes — any finding at 7 or above fails the gate. The orchestrator posts this as the PR comment; end it with the signature line from the `pr-filing` skill.
+One finding per issue, under 400 words total: severity, title, `file:line`, a one-sentence exploit path, and the suggested fix. Distinguish confirmed holes (quoted from the code) from suspicions (what you'd need to check). End with a verdict line: worst severity found, and whether the gate passes — any finding at 7 or above fails the gate.
+
+Return this report to the orchestrator. You never post to the PR — the judge reads your findings, re-checks them, and decides what reaches the PR.
