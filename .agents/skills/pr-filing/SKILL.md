@@ -49,12 +49,13 @@ gh api repos/{owner}/{repo}/pulls/{number}/reviews --input /tmp/opencode/review.
 
 ## Round 1 — fixes and inline replies
 
-Record the head SHA before fixing (`git rev-parse HEAD`) — round 2 needs it. Fix or rebut every inline finding and push. Then reply to each thread — one short reply per comment; these are the collapsed-by-default comments on GitHub:
+Record the head SHA before fixing (`git rev-parse HEAD`) — round 2 needs it. Fix or rebut every inline finding and push. Then reply to each thread — one short reply per comment; these are the collapsed-by-default comments on GitHub. Keep each reply to **one or two plain lines** — the compact pattern, not the finding's full story. Write the reply into a JSON file and post it with `gh api --input`, never through shell escaping; after posting, reread the rendered body to catch leaked escapes:
 
 ```
 gh api repos/{owner}/{repo}/pulls/{number}/comments --jq '.[].id'    # list inline comment ids
-gh api repos/{owner}/{repo}/pulls/{number}/comments/{id}/replies -f body="Fixed in <sha> — what changed"
-gh api repos/{owner}/{repo}/pulls/{number}/comments/{id}/replies -f body="Not fixing — <reason>"
+printf '{"body":"Fixed in <sha> — what changed"}' > reply.json
+gh api repos/{owner}/{repo}/pulls/{number}/comments/{id}/replies --input reply.json
+gh api -X PATCH repos/{owner}/{repo}/pulls/comments/{id} --input reply.json    # edit a reply later
 ```
 
 ## Round 2
@@ -68,7 +69,7 @@ If it proposes an edit to the size/tier rule in round 2's fifth question, apply 
 One final comment, under 150 words, and nothing else on the PR after it:
 
 - Round-2 outcome in two or three lines: fixes verified, tier confirmed or escalated, bloat or drift if any, anything you chose not to fix and why.
-- The verdict line. `quick merge` requires all three: the tier is `auto`, the judge's recommendation is `quick merge`, and CI is green with no unresolved judge findings — then say plainly: "LGTM — let's get this merged." Otherwise say plainly: "Needs human review — the `review-gate` job blocks the merge until you approve."
+- The verdict line. `quick merge` requires all three: the tier is `auto`, the judge's recommendation is `quick merge`, and CI is green with no unresolved judge findings — then say plainly: "LGTM — let's get this merged." Otherwise say plainly: "Needs human review — the `review-gate` job stays red and the `needs review` label stays until you approve."
 - Update labels to the final tier. Never downgrade; never create labels.
 - End with the signature line: `Replying as {MODEL_NAME} on behalf of {GITHUB_USERNAME}`.
 - Mark the PR ready: `gh pr ready`.
