@@ -20,7 +20,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 - `npm run typecheck` — type generation and `tsc --noEmit`.
 - `npm run test` — Vitest, single run; `npm run test:watch` for watch mode. Unit tests live next to the module they cover (`src/lib/*.test.ts`).
 - `npm run build` — production build; run after any structural change (new/deleted routes or files).
-- Screenshots for PR evidence — capture with [playwright](https://playwright.dev), which is installed as a devDependency; PNGs land in `evidence/` (gitignored). Browsers install once with `npx playwright install chromium`.
+- Screenshots for PR evidence — capture with [playwright](https://playwright.dev), which is installed as a devDependency; capture each page at desktop and mobile sizes. PNGs land in `evidence/` (gitignored). Browsers install once with `npx playwright install chromium`.
 
 ### Verifying locally
 
