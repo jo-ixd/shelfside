@@ -1,0 +1,103 @@
+name: Review gate
+
+# Enforces the human-review rule. It recomputes the condition itself so it
+# holds for every PR, however it was filed. The rule is documented in
+# .agents/skills/review-judge/SKILL.md — keep the two in sync.
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  pull_request_review:
+    types: [submitted, dismissed]
+
+permissions:
+  contents: read
+  pull-requests: read
+
+concurrency:
+  group: review-gate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  gate:
+    name: human review gate
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      REPO: ${{ github.repository }}
+      PR_NUMBER: ${{ github.event.pull_request.number }}
+      PR_HEAD: ${{ github.event.pull_request.head.repo.full_name }}
+    steps:
+      - name: Check whether this PR needs a human review
+        run: |
+          set -euo pipefail
+
+          # fork pull requests run with a read-only token, skip those
+          if [ "$PR_HEAD" != "$REPO" ]; then
+            echo "Pull request is from a fork, skipping the gate"
+            exit 0
+          fi
+
+          # authored lines only: lockfiles are churn, not work. The lockfile
+          # list must stay in sync with .agents/skills/review-judge/SKILL.md
+          # capture the files list first: an API failure here must fail the
+          # gate closed, not fall through as an empty list that skips review
+          tsv=$(gh api --paginate "repos/$REPO/pulls/$PR_NUMBER/files?per_page=100" \
+            --jq '.[] | [.filename, .additions, .deletions] | @tsv') \
+            || { echo "::error::Could not list pull request files, failing closed" ; exit 1 ; }
+          if [ -z "$tsv" ]; then
+            echo "::error::No pull request files returned, failing closed" ; exit 1
+          fi
+
+          total=0
+          criticals=""
+          while IFS=$'\t' read -r filename additions deletions; do
+            case "$filename" in
+              package-lock.json|server/Cargo.lock) continue ;;
+            esac
+            total=$((total + additions + deletions))
+
+            # a change is critical if it touches CI, the database, core logic
+            # or the build pipeline, no matter how few lines change
+            case "$filename" in
+              .github/workflows/*|server/migrations/*|server/src/*|server/tests/*|server/Cargo.toml|src/lib/*|next.config.ts|tsconfig.json|vitest.config.mts|eslint.config.mjs)
+                criticals="${criticals:+$criticals, }$filename"
+                ;;
+            esac
+          done <<< "$tsv"
+
+          needs_review=false
+          if [ "$total" -ge 500 ]; then
+            needs_review=true
+          fi
+          if [ -n "$criticals" ]; then
+            needs_review=true
+          fi
+
+          if [ "$needs_review" = false ]; then
+            echo "$total changed lines, no critical paths touched: no human review required"
+            exit 0
+          fi
+
+          reason="$total changed lines"
+          if [ -n "$criticals" ]; then
+            reason="$reason, touches critical paths: $criticals"
+          fi
+
+          # only an approval pinned to the current head commit by a repo
+          # owner, member, or collaborator counts: approvals left before the
+          # latest push, or from read-only participants, don't
+          head=$(gh api "repos/$REPO/pulls/$PR_NUMBER" --jq '.head.sha')
+          case "$head" in
+            ''|*[!0-9a-f]*) echo "::error::GitHub returned a malformed head sha" ; exit 1 ;;
+          esac
+
+          approvals=$(gh api "repos/$REPO/pulls/$PR_NUMBER/reviews" \
+            --jq "[.[] | select(.state == \"APPROVED\" and .commit_id == \"$head\" and (.author_association == \"OWNER\" or .author_association == \"MEMBER\" or .author_association == \"COLLABORATOR\")) | .user.login] | unique | length")
+
+          if [ "$approvals" -eq 0 ]; then
+            echo "::error::Human review required ($reason). Approve this PR to pass the gate."
+            exit 1
+          fi
+
+          echo "Human review present ($reason), gate passes"

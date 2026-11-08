@@ -17,8 +17,16 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 - `npm run dev` — dev server on http://localhost:3000
 - `npm run lint` — ESLint (flat config, `eslint-config-next`).
 - `npm run format` — Prettier over the whole repo; `npm run format:check` verifies without writing.
+- `npm run typecheck` — type generation and `tsc --noEmit`.
 - `npm run test` — Vitest, single run; `npm run test:watch` for watch mode. Unit tests live next to the module they cover (`src/lib/*.test.ts`).
 - `npm run build` — production build; run after any structural change (new/deleted routes or files).
+- `npm run screenshot -- <url>` — Playwright capture of a page at desktop and mobile sizes; PNGs land in `evidence/` (gitignored). Browsers install once with `npx playwright install chromium`.
+
+### Verifying locally
+
+Make sure you after writing the code you run the local verification pipeline. Lint, format, typecheck, test and build.
+
+Never open a PR that has not been verified locally. The `pr-filing` skill takes this as step zero and refuses to file without it.
 
 ## Code rules
 
@@ -30,7 +38,5 @@ This is a typescript codebase, do the following:
 - never use `as` casting
 
 Follow conventional commits and simple plain English messages describing what you did not how you did it, for example, `docs: changed AGENTS.md`. Make sure to commit often.
-
-When verifying code, never run a dev server rely on testing.
 
 Never merge a pull request, period.
