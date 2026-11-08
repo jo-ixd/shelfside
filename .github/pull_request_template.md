@@ -3,6 +3,10 @@
 Short paragraph descriptions of what was fixed.
 Tag the Github issue here if relevant.
 
+## Systems
+
+Which areas this touches — frontend, backend/API, database, CI, tooling — one line each, with the why.
+
 ## Evidence
 
 Any evidence, screenshots, or recordings. If making frontend UI changes, attach a before and after, can be a screenshot or recording.
