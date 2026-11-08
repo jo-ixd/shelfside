@@ -1,6 +1,6 @@
 ---
 name: bug-hunt
-description: "A specialised review gate hunting correctness bugs in the diff: broken logic, unhandled errors, edge cases, state and data-flow mistakes, and frontend/backend contract mismatches across the Next.js frontend and the axum/sqlx/SQLite Rust server. Runs as a fresh-context flash sub-agent on every PR; invoked by the pr-filing skill. Findings return to the judge — this gate never posts to the PR."
+description: "Hunting correctness bugs in the diff: broken logic, unhandled errors, edge cases, state and data-flow mistakes, and frontend/backend contract mismatches across the frontend and backend. Invoked by the pr-filing skill, never to be used by a user."
 ---
 
 Hunt for ways the change breaks at runtime. Not style — the `code-review` pre-review covered that. Not security — that is the `security-review` gate. Not WCAG — that is the `accessibility-review` gate. Only findings where behaviour goes wrong: something crashes, returns wrong data, loses data, dead-ends a user, or races another request.
